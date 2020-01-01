@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        .class1{
+            height: 50px;
+        }
+    </style>
+    <script>
+        function showTime()
+        {
+            var myTime = new Date();
+            var monthArray = new Array("1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月");
+            var dayArray = new Array("星期日","星期一","星期二","星期三","星期四","星期五","星期六");
+            var year = myTime.getFullYear();
+            var date = myTime.getDate();
+            var hours = myTime.getHours();
+            var minutes = myTime.getMinutes();
+            var seconds = myTime.getSeconds();
+            var suf = "AM"
+            if(hours>12)
+            {
+                suf = "PM";
+                hours =hours - 12;
+            }
+            if(hours == 0)
+            {
+                hours = 12;
+            }
+            if(minutes <= 9)
+            {
+                minutes = "0" + minutes;
+            }
+            if(seconds <= 9)
+            {
+                seconds = "0" + seconds;
+            }
+            var theTime = "今天是：" + year + "年 " + monthArray[myTime.getMonth()] + date + "日 " + dayArray[myTime.getDay()] + " 当前时间 " + hours + ":" + minutes + ":" + seconds +  suf;
+            DT.innerHTML = theTime;
+            setTimeout("showTime()",1000);
+        }
+        function show(sid)
+        {
+            whichEl = eval("submenu" + sid);
+            if (whichEl.style.display == "none")
+            {
+                eval("submenu" + sid + ".style.display=\"\";");
+            }
+            else
+            {
+                eval("submenu" + sid + ".style.display=\"none\";");
+            }
+        }
+        function Send()
+        {
+            $.ajax({
+                url:"http://111.229.106.211:8000/controller",
+                type:'post',
+                error:function (error) {
+                    alert(error);
+                }
+            })
+        }
+
+    </script>
+    <style type="text/css">
+        .header{border-bottom:1px solid #ccc;margin-bottom:0px;height: 40px}
+        .MainContainer{min-width:960px;max-width:1600px;}
+        .sidebar{width:180px;float:left;margin-right:-180px;border-right:1px solid #ccc;min-height:860px;padding:5px;}
+        .main{float:left;margin-left:180px;padding:5px;min-height: 860px;min-width: 1740px;background-image: url("852.jpg");
+        }
+        .menu_title {
+        }
+        .menu_title SPAN {
+            FONT-WEIGHT: bold; LEFT: 7px; COLOR: #215dc6; POSITION: relative; TOP: 2px
+        }
+        .menu_title2 {
+        }
+        .menu_title2 SPAN {
+            FONT-WEIGHT: bold; LEFT: 8px; COLOR: #428eff; POSITION: relative; TOP: 2px
+        }
+        .class1{
+            border: 1px solid black;
+        }
+    </style>
+    <link rel="stylesheet" href="css.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body onload = "showTime()">
+<div class="header">
+    <table cellSpacing=0 cellPadding=0 width="100%" align=center border=0 style="height: 40px">
+        <tbody>
+        <tr>
+            <td class=txlHeaderBackgroundAlternate width="43%" height=23 style="font-size: 20px;font-family: 楷体">&nbsp;&nbsp;→ 欢迎你进入物流管理</td>
+            <td class=txlHeaderBackgroundAlternate  width="29%" value="button" style="font-size: 20px;font-family: 楷体"><div id = "DT"></div></td>
+            <td class=txlHeaderBackgroundAlternate vAlign=center align=right width="28%">
+                <u><a href="homepage.html"  target=mainFrame style="font-size: 18px;color: #f5f5dc;font-family: 楷体">返回主窗口</a></u>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="MainContainer">
+    <div class="sidebar" style="background-color: #d6dff7">
+
+        <table cellSpacing=0 cellPadding=0 width=158 align=center >
+            <tbody>
+            <tr>
+                <td class=menu_title id=menuTitle1
+                    onmouseover="this.className='menu_title2';" onclick=show(0)
+                    onmouseout="this.className='menu_title';"
+                    background=admin_left_1.gif height="30">
+                    <span><b style="font-size: 25px;font-family: 楷体">订单状况</b></span></td>
+            </tr>
+            <tr>
+                <td id=submenu0 style="display:none">
+                    <div class=sec_menu style="WIDTH: 158px ">
+                        <table cellSpacing=0 cellPadding=0 width=158 align=center>
+                            <tbody>
+                            <tr>
+                                <td  background=admin_left_2.gif height=30><a  href="accept.html" target=mainFrame style="font-size: 20px;font-family: 楷体">&nbsp;历史订单</a></td>
+                            </tr>
+                            <tr>
+                                <td  background=admin_left_2.gif height=30><a href="Allocation.html" target="mainFrame" style="font-size: 20px;font-family: 楷体">&nbsp;收发订单</a></td>
+                            </tr>
+                            </tbody></table>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table cellSpacing=0 cellPadding=0 width=158 align=center >
+            <tbody>
+            <tr>
+                <td class=menu_title id=menuTitle2
+                    onmouseover="this.className='menu_title2';" onclick=show(1)
+                    onmouseout="this.className='menu_title';"
+                    background=admin_left_1.gif height=30>
+                    <span><B style="font-size: 25px;font-family: 楷体">车辆状况</B></span></td>
+            </tr>
+            <tr>
+                <td id=submenu1 style="display:none">
+                    <div class=sec_menu style="WIDTH: 158px ">
+                        <table cellSpacing=0 cellPadding=0 width=158 align=center>
+                            <tbody>
+                            <tr>
+                                <td  background=admin_left_2.gif height=30><A  href="#" target=mainFrame style="font-size: 20px;font-family: 楷体">&nbsp;实时位置</A></td>
+                            </tr>
+                            <tr>
+                                <td  background=admin_left_2.gif height=30><a href="#" target="mainFrame" style="font-size: 20px;font-family: 楷体">&nbsp;车辆时速</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div  id="main" class="main">
+        <br><br>
+        <table class="table table-hover" border="1px" bordercolor="black">
+            <tr style="height: 60px;font-size: 35px;font-family: 楷体;border-color: black">
+                <thread>
+                    <th style="border-color: black">订单号</th>
+                    <th style="border-color: black">发起时间</th>
+                    <th style="border-color: black">发起人</th>
+                    <th style="border-color: black">起点</th>
+                    <th style="border-color: black">终点</th>
+                    <th style="border-color: black">类别</th>
+                    <th style="border-color: black">商品</th>
+                    <th style="border-color: black">物流司机</th>
+                    <th style="border-color: black">物流车辆</th>
+                    <th style="border-color: black">一键派送</th>
+                </thread>
+            </tr>
+            <tbody border="1px" bordercolor="black">
+            <tr>
+                <td style="font-size: 30px">0001</td>
+                <td style="font-size: 30px">2019.12.30</td>
+                <td style="font-size: 30px">Jack</td>
+                <td style="font-size: 30px">南京</td>
+                <td style="font-size: 30px">扬州</td>
+                <td style="font-size: 30px">日用品</td>
+                <td style="font-size: 30px">毛巾</td>
+                <td style="font-size: 30px">老王</td>
+                <td style="font-size: 30px">苏A12378</td>
+                <td style="font-size: 30px"><button onclick="Send()"style="margin-left: 50px">派送</button></td>
+            </tr>
+            <tr style="height: 60px;font-size: 35px;font-family: 楷体">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td><td></td>
+                <td style="font-size: 30px"><button onclick="Send()"style="margin-left: 50px">派送</button></td>
+            </tr>
+            <tr class="class1">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="font-size: 30px"><button onclick="Send()"style="margin-left: 50px">派送</button></td>
+            </tr>
+            <tr class="class1">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="font-size: 30px"><button onclick="Send()"style="margin-left: 50px">派送</button></td>
+            </tr>
+            <tr class="class1">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="font-size: 30px"><button onclick="Send()"style="margin-left: 50px">派送</button></td>
+            </tr>
+            <tr class="class1">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="font-size: 30px"><button onclick="Send()"style="margin-left: 50px">派送</button></td>
+            </tr>
+            <tr class="class1">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="font-size: 30px"><button onclick="Send()"style="margin-left: 50px">派送</button></td>
+            </tr>
+            <tbody>
+        </table>
+        <br><br><br>
+        <ul class="pagination" style="margin-left: 650px">
+            <li class="dropdown-toggled" ><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">第一页</a></li>
+            <li class="active"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">1</a> </li>
+            <li class="dropdown-toggled"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">2</a></li>
+            <li class="dropdown-toggled"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">3</a></li>
+            <li class="disabled"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">最后一页</a></li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

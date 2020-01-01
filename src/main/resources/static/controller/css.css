@@ -1,0 +1,46 @@
+BODY {
+	FONT-SIZE: 12px; COLOR: #000000; font-family: 楷体; BACKGROUND-COLOR: #d6dff7
+}
+A {
+	font-size: 12px; COLOR: #000000; TEXT-DECORATION: none
+}
+A:hover {
+	COLOR: #428eff
+}
+TD {
+	FONT-SIZE: 12px; LINE-HEIGHT: 15px; font-family: 楷体;
+}
+TD.txlHeaderBackgroundAlternate {
+	COLOR: #ffffff; BACKGROUND-COLOR: #799ae1
+}
+#TableTitleLink A:link {
+	COLOR: #ffffff; TEXT-DECORATION: none
+}
+#TableTitleLink A:visited {
+	COLOR: #ffffff; TEXT-DECORATION: none
+}
+#TableTitleLink A:active {
+	COLOR: #ffffff; TEXT-DECORATION: none
+}
+#TableTitleLink A:hover {
+	COLOR: #ffffff; TEXT-DECORATION: underline
+}
+TD.txlRow {
+	BACKGROUND-COLOR: #dee5fa
+}
+TD.txlRowHighlight {
+	BACKGROUND-COLOR: #d4def9
+}
+.tableBorder {
+	BORDER-RIGHT: #6595d6 1px solid; BORDER-TOP: #6595d6 1px solid; BORDER-LEFT: #6595d6 1px solid; BORDER-BOTTOM: #6595d6 1px solid; BACKGROUND-COLOR: #ffffff
+}
+INPUT {
+	FONT-SIZE: 12px; LINE-HEIGHT: 15px; FONT-FAMILY: Tahoma,Verdana
+}
+SELECT {
+	FONT-SIZE: 12px; LINE-HEIGHT: 15px; FONT-FAMILY: Tahoma,Verdana
+}
+TEXTAREA {
+	FONT-SIZE: 12px; LINE-HEIGHT: 15px; FONT-FAMILY: Tahoma,Verdana
+}
+.STYLE3 {font-size: 12px}

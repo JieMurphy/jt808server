@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>登录</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        #login {
+            width: 500px;
+            height:370px;
+            overflow: hidden;
+            border: solid 0px #CCCCCC;
+        }
+        #login_title {
+            width: 100%;
+            height: 50px;
+            line-height: 40px;
+            background-color: rgba(222, 223, 255, 0.67);
+            text-align: center;
+            font-size: 40px;
+            color: #000000;
+            font-family: 楷体;
+        }
+        .line {
+            width: 400px;
+            height: 50px;
+            line-height: 30px;
+            margin-left: 20px;
+            text-align: center;
+            font-family: 楷体;
+        }
+        .line input {
+            width: 250px;
+            font-size: 25px;
+        }
+        .line a {
+            font-size: 35px;
+            color: black;
+        }
+        #log_submit {
+            display: block;
+            width: 350px;
+            height: 35px;
+            margin-left: 80px;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-family: 楷体;
+            font-size: 25px;
+        }
+        .divForm{
+            position: absolute;/*绝对定位*/
+            width: 300px;
+            height: 200px;
+            border: 1px solid red;
+            text-align: center;/*(让div中的内容居中)*/
+            top: 50%;
+            left: 50%;
+            margin-top: -220px;
+            margin-left: 200px;
+        }
+        .class1{
+            border-width: 2px;
+            border-color: #c5c3ff;
+            border-style: solid;
+            background-image: url("/controller/7774.jpg");
+        }
+    </style>
+    <script>
+        function Login() {
+            var name=$("#username").val();
+            var pw=$("#password").val();
+            console.log(name);
+            console.log(pw);
+            $.ajax({
+                url:"http://" + window.location.host + "/controller/login",
+                type:'post',
+                data:{username:$("#username").val(),password:$("#password").val()},
+                success:function (data)
+                {
+                    window.location.href="http://" + window.location.host + "/success";
+                },error:function (error) {
+                    console.log(error);
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+<div style="background-color: rgba(237,237,237,0.7);width: auto">
+        <div style="border-width:2px;margin-left: 1600px;width: 300px">
+            <form style="font-family: 楷体;font-size: 15px">
+                <input placeholder="请输入关键字"><a style="color: #ffc86d">English</a>
+            </form>
+        </div>
+</div>
+
+<div class="class1" style="background-color: rgb(0,0,0);width: auto;height: 848px">
+<form action="#" method="post">
+    <div id="login" style="text-align:center" class="divForm">
+        <div id="login_title">管理员登录</div>
+        <div class="line" ><span id="msg"></span></div>
+        <div class="line"><a style="font-size: 30px;color: #ffc86d">账号:</a>&nbsp;&nbsp;
+            <input id="username" type="text" placeholder="账号/手机/邮箱" />
+        </div>
+        <div class="line"><a style="color: #ffc86d;font-size: 30px">密码:</a>&nbsp;&nbsp;
+            <input id="password" type="password" placeholder="请输入密码" />
+        </div>
+        <br>
+        <button type="button" onclick="Login()" id="log_submit">登录</button>
+        <div id="myDiv">68484</div>
+        <br>
+        <br>
+        <div class="line"><b><a href="#" style="margin-left: 30px;color: rgb(9,9,9)">找回密码</a></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><a href="#" style="color: #090909">注册账号</a>
+            </b></div>
+    </div>
+</form>
+</div>
+<footer style="font-size: 20px;background-color: rgba(229,231,232,0.76)">
+    <small><a href="#">法律条文</a></small>&nbsp;&nbsp;&nbsp;&nbsp;
+    <small><a href="#">联系我们</a></small>&nbsp;&nbsp;&nbsp;&nbsp;
+    <small><a href="#">客户意见</a></small>&nbsp;&nbsp;&nbsp;&nbsp;
+    <small><a href="#">商户合作</a></small>
+</footer>
+</body>
+</html>
