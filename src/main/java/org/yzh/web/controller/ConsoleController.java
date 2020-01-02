@@ -20,7 +20,14 @@ public class ConsoleController {
     public String console(HttpSession session) {
         session.setAttribute(SessionKey.USER_ID, session.getId().hashCode());
         System.out.println(session.getId().hashCode());
-        return "forward:/controller/Login.html";
+        return "forward:/Allocation.html";
+    }
+
+    @GetMapping(value = "/login")
+    public String login(HttpSession session) {
+        session.setAttribute(SessionKey.USER_ID, session.getId().hashCode());
+        System.out.println(session.getId().hashCode());
+        return "forward:/Login.html";
     }
 
     @GetMapping("test/{terminalId}")
@@ -30,9 +37,10 @@ public class ConsoleController {
         return response;
     }
 
-    @GetMapping(value = "/success")
-    public String welcome() throws Exception
+    @GetMapping(value = "/home")
+    public String welcome(HttpSession session) throws Exception
     {
-        return "forward:/controller/homepage.html";
+        System.out.println(session.getId().hashCode());
+        return "forward:/homepage.html";
     }
 }

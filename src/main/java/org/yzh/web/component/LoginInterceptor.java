@@ -14,7 +14,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         Object loginName = httpServletRequest.getSession().getAttribute(SessionKey.USER_ID);
         if(loginName == null || !(loginName instanceof String))
         {
-            httpServletResponse.sendRedirect("/");
+            httpServletResponse.sendRedirect("/login");
             return false;
         }
 

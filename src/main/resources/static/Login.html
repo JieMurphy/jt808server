@@ -64,7 +64,7 @@
             border-width: 2px;
             border-color: #c5c3ff;
             border-style: solid;
-            background-image: url("/controller/7774.jpg");
+            background-image: url("7774.jpg");
         }
     </style>
     <script>
@@ -79,7 +79,14 @@
                 data:{username:$("#username").val(),password:$("#password").val()},
                 success:function (data)
                 {
-                    window.location.href="http://" + window.location.host + "/success";
+                    if(data == "success")
+                    {
+                        window.location.href="http://" + window.location.host + "/home";
+                    }
+                    else
+                    {
+                        alert(data);
+                    }
                 },error:function (error) {
                     console.log(error);
                 }

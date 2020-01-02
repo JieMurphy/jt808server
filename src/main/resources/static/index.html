@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>JT/T 808 Server</title>
     <style>
         html, body {
@@ -36,7 +36,9 @@
 <div class="container">
     <div class="message-box">
         <h4>Console</h4>
-        <input id="text" type="text"/><button onclick="jsonData()">Send</button>
+        用户名：<input id="usrname" type="text"/>
+        <br/>
+        密码：<input id="passwd" type="text"/><button onclick="jsonData()">注册</button>
         <div class="message">
             <table id="tb">
             </table>
@@ -104,15 +106,34 @@
         server.sendMessage(message);
     }
 
+    function stringData()
+    {
+        $.ajax({
+            url:"http://" + window.location.host + "/hello",
+            xhrFields:{withCredentials:true},
+            type:'get',
+            data:{username:$("#text").val(),password:"admin"},
+            contentType:"application/x-www-form-urlencoded",
+            success:function (data)
+            {
+                alert(data);
+            },error:function (error) {
+                alert(error);
+            }
+        })
+    }
+
     function jsonData()
     {
         $.ajax({
-            url:"http://localhost:8000/test/java/org.yzh.jt808.codec/Test",
-            type:'get',
+            url:"http://" + window.location.host + "/controller/allocation",
+            xhrFields:{withCredentials:true},
+            type:'post',
+            data:{username:$("#usrname").val(),password:$("#passwd").val()},
+            contentType:"application/x-www-form-urlencoded",
             success:function (data)
             {
-                alert("65852");
-                alert(JSON.stringify(data));
+                alert(data);
             },error:function (error) {
                 alert(error);
             }
