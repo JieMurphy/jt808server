@@ -18,13 +18,13 @@ public class Orders {
     @Column
     private Timestamp startTime;
     private Timestamp changeTime;
-    private long cumsNumber;
+    private String cumsNumber;
     private String goodName;
     private int count;
     private String startAddress;
     private String endAddress;
     private int status;
-    private long driNumber;
+    private String driNumber;
 
     public Orders()
     {
@@ -32,7 +32,7 @@ public class Orders {
         this.startTime = new Timestamp(System.currentTimeMillis());
     }
 
-    public Orders(long cumsNumber,String goodName,int count,String address)
+    public Orders(String cumsNumber,String goodName,int count,String address)
     {
         super();
         this.startTime = new Timestamp(System.currentTimeMillis());
@@ -59,11 +59,15 @@ public class Orders {
         return status;
     }
 
-    public long getDriNumber() {
+    public String getDriNumber() {
         return driNumber;
     }
 
-    public long getCumsNumber() {
+    public void setDriNumber(String driNumber) {
+        this.driNumber = driNumber;
+    }
+
+    public String getCumsNumber() {
         return cumsNumber;
     }
 

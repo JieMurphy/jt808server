@@ -12,7 +12,7 @@ public class GoodService {
 
     public boolean save(Goods goods)
     {
-        if(goodRepository.findByGoodName(goods.getGoodName()) == null)
+        if(goodRepository.findByGoodName(goods.getGoodName()) != null)
         {
             return false;
         }
@@ -23,5 +23,14 @@ public class GoodService {
     public List<Goods> list()
     {
         return goodRepository.findAll();
+    }
+
+    public boolean judge(String name)
+    {
+        if(goodRepository.findByGoodName(name) == null)
+        {
+            return false;
+        }
+        return true;
     }
 }

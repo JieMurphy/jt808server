@@ -20,7 +20,7 @@ public class ConsoleController {
     public String console(HttpSession session) {
         session.setAttribute(SessionKey.USER_ID, session.getId().hashCode());
         System.out.println(session.getId().hashCode());
-        return "forward:/Allocation.html";
+        return "forward:/index.html";
     }
 
     @GetMapping(value = "/login")
@@ -42,5 +42,17 @@ public class ConsoleController {
     {
         System.out.println(session.getId().hashCode());
         return "forward:/homepage.html";
+    }
+
+    @GetMapping(value = "/allocation")
+    public String allocation()
+    {
+        return "forward:/Allocation.html";
+    }
+
+    @GetMapping(value = "/confirm")
+    public String confirm()
+    {
+        return "forward:/recv.html";
     }
 }

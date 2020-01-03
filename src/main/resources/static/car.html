@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        .class1{
+            height: 50px;
+        }
+    </style>
     <script>
         function showTime()
         {
@@ -47,6 +55,16 @@
                 eval("submenu" + sid + ".style.display=\"none\";");
             }
         }
+        function Send()
+        {
+            $.ajax({
+                url:"http://111.229.106.211:8000/controller",
+                type:'post',
+                error:function (error) {
+                    alert(error);
+                }
+            })
+        }
         function history() {
             $.ajax({
                 url:"http://" + window.location.host +"/controller/",
@@ -61,23 +79,6 @@
         }
         function allocation() {
             $.ajax({
-                url:"http://" + window.location.host +"/controller/allocation",
-                type:'post',
-                success:function (data)
-                {
-                    if(data == "success")
-                    {
-                        window.location.href="http://" + window.location.host +"/allocation"
-                    }
-                    else alert(data);
-                },error:function (error) {
-                    console.log(error);
-                }
-            })
-        }
-
-        function recv() {
-            $.ajax({
                 url:"http://" + window.location.host +"/controller/",
                 type:'get',
                 success:function (data)
@@ -88,26 +89,15 @@
                 }
             })
         }
+        function location() {
 
-        function sign() {
-            $.ajax({
-                url:"http://" + window.location.host +"/controller/",
-                type:'get',
-                success:function (data)
-                {
-                    window.location.href="http://" + window.location.host +"/"
-                },error:function (error) {
-                    console.log(error);
-                }
-            })
         }
     </script>
     <style type="text/css">
-        .header{border-bottom:1px solid #ccc;margin-bottom:0px;height: 40px;background-image: url("879.png")}
+        .header{border-bottom:1px solid #ccc;margin-bottom:0px;height: 40px}
         .MainContainer{min-width:960px;max-width:1600px;}
         .sidebar{width:180px;float:left;margin-right:-180px;border-right:1px solid #ccc;min-height:860px;padding:5px;}
-        .main{float:left;margin-left:180px;padding:5px;min-height: 860px;min-width: 1740px;
-            background-image: url("88.jpg");
+        .main{float:left;margin-left:180px;padding:5px;min-height: 860px;min-width: 1740px;background-image: url("852.jpg");
         }
         .menu_title {
         }
@@ -119,6 +109,9 @@
         .menu_title2 SPAN {
             FONT-WEIGHT: bold; LEFT: 8px; COLOR: #428eff; POSITION: relative; TOP: 2px
         }
+        .class1{
+            border: 1px solid black;
+        }
     </style>
     <link rel="stylesheet" href="css.css" type="text/css">
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
@@ -128,17 +121,17 @@
 </head>
 <body onload = "showTime()">
 <div class="header">
-<table cellSpacing=0 cellPadding=0 width="100%" align=center border=0 style="height: 40px">
-    <tbody>
-    <tr>
-        <td class=txlHeaderBackgroundAlternate width="43%" height=23 style="font-size: 20px;font-family: 楷体">&nbsp;&nbsp;→ 欢迎你进入物流管理</td>
-        <td class=txlHeaderBackgroundAlternate  width="29%" value="button" style="font-size: 20px;font-family: 楷体"><div id = "DT"></div></td>
-        <td class=txlHeaderBackgroundAlternate vAlign=center align=right width="28%">
-            <u><a href="homepage.html"  target=mainFrame style="font-size: 18px;color: #f5f5dc;font-family: 楷体">返回主窗口</a></u>
-        </td>
-    </tr>
-    </tbody>
-</table>
+    <table cellSpacing=0 cellPadding=0 width="100%" align=center border=0 style="height: 40px">
+        <tbody>
+        <tr>
+            <td class=txlHeaderBackgroundAlternate width="43%" height=23 style="font-size: 20px;font-family: 楷体">&nbsp;&nbsp;→ 欢迎你进入物流管理</td>
+            <td class=txlHeaderBackgroundAlternate  width="29%" value="button" style="font-size: 20px;font-family: 楷体"><div id = "DT"></div></td>
+            <td class=txlHeaderBackgroundAlternate vAlign=center align=right width="28%">
+                <u><a href="homepage.html"  target=mainFrame style="font-size: 18px;color: #f5f5dc;font-family: 楷体">返回主窗口</a></u>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 <div class="MainContainer">
     <div class="sidebar" style="background-color: #d6dff7">
@@ -158,10 +151,10 @@
                         <table cellSpacing=0 cellPadding=0 width=158 align=center>
                             <tbody>
                             <tr>
-                                <td background=admin_left_2.gif height=30><a href="/allocation" target="mainFrame" style="font-size: 20px;font-family: 华文行楷;color: rgb(82,123,255)">&nbsp;待发配订单</a></td>
+                                <td background=admin_left_2.gif height=30><a href="javascript:allocation()" target="mainFrame" style="font-size: 20px;font-family: 华文行楷;color: rgb(82,123,255)">&nbsp;待发配订单</a></td>
                             </tr>
                             <tr>
-                                <td background=admin_left_2.gif height=30><a href="/confirm" target="mainFrame" style="font-size: 20px;font-family: 华文行楷;color: rgb(82,123,255)">&nbsp;待接受订单</a></td>
+                                <td background=admin_left_2.gif height=30><a href="javascript:recv()" target="mainFrame" style="font-size: 20px;font-family: 华文行楷;color: rgb(82,123,255)">&nbsp;待接受订单</a></td>
                             </tr>
                             <tr>
                                 <td background=admin_left_2.gif height=30><a href="javascript:sign()" target="mainFrame" style="font-size: 20px;font-family: 华文行楷;color: rgb(82,123,255)">&nbsp;待签收订单</a></td>
@@ -169,10 +162,9 @@
                             <tr>
                                 <td background=admin_left_2.gif height=30><a href="javascript:history()" target=mainFrame style="font-size: 20px;font-family: 华文行楷;color:rgb(82,123,255)">&nbsp;历史订单</a></td>
                             </tr>
-                            </tbody>
-                        </table>
+                            </tbody></table>
                     </div>
-                   </td>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -184,22 +176,20 @@
                     onmouseout="this.className='menu_title';"
                     background=admin_left_1.gif height=30>
                     <span><B style="font-size: 25px;font-family: 楷体">车辆状况</B></span></td>
-            </tr>
+                </tr>
             </tbody>
         </table>
-
     </div>
     <div  id="main" class="main">
-        <input type="image" src="1234.jpg" style="height: 150px;width: 200px">
-        <br>
-        <a style="font-family: 楷体;font-size: 60px;margin-left: 650px;color: rgb(255,0,153) ">物流中心</a>
-        <br>
-        <a style="margin-left: 350px;font-size: 80px;font-family: 华文行楷;color: rgba(153,0,204,0.52)">您好！</a>
         <br><br>
-        <a style="font-family: 华文行楷;font-size: 50px;margin-left: 350px;color:rgba(153,0,204,0.63) ">物流中心管理员，欢迎进入:</a>
-        <br>
-        <a style="font-family: 华文行楷;font-size: 40px;margin-left: 450px;color:rgba(153,0,204,0.67)">该界面的作用是对物流后台的管理，您可以点击&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;左侧功能选项进行相应的操作.</a>
+        <table class="table" border="1px" bordercolor="rgba(188,188,188,0.7)">
+            <tr style="height: 60px;font-size: 35px;font-family: 楷体;border-color: rgba(188,188,188,0.7)">
+                <th style="border-color: rgba(188,188,188,0.7)">在线车辆</th>
+                <td bordercolor="black" ><a  style="font-size: 30px" href="" onclick="location()">苏A12378</a></td>
+                <td bordercolor="black" style="font-size: 30px">苏A85728</td>
+                <td bordercolor="black" style="font-size: 30px">苏K85728</td>
+            </tr>
+        </table>
     </div>
 </div>
 </body>

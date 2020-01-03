@@ -7,8 +7,8 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Orders,Long> {
-    public List<Orders> findByCumsNumber(long number);
+    public List<Orders> findByCumsNumber(String number);
     public List<Orders> findByStatus(int status);
-    public List<Orders> findByDriNumberAndStatus(long number,int status);
-    public List<Orders> findByCumsNumberAndStatus(long number,int status);
+    public List<Orders> findByDriNumberAndStatus(String number,int status);
+    public List<Orders> findByCumsNumberAndStatus(String number,int status);
 }

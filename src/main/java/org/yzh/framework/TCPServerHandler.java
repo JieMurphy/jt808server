@@ -18,7 +18,7 @@ import java.lang.reflect.Type;
 
 public class TCPServerHandler extends ChannelInboundHandlerAdapter {
 
-    private final SessionManager sessionManager = SessionManager.getInstance();
+    public static final SessionManager sessionManager = SessionManager.getInstance();
 
     private Logger logger;
 

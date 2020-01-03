@@ -36,9 +36,23 @@
 <div class="container">
     <div class="message-box">
         <h4>Console</h4>
-        用户名：<input id="usrname" type="text"/>
+        <input id="usrname" type="text"/>
         <br/>
-        密码：<input id="passwd" type="text"/><button onclick="jsonData()">注册</button>
+        <input id="passwd" type="text"/>
+        <br/>
+        <button onclick="jsonData('/controller/sign')">注册</button>
+        <br/>
+        <button onclick="jsonData('/controller/allocation')">待分配查询</button>
+        <br/>
+        <button onclick="jsonData('/controller/terminals')">在线车辆查询</button>
+        <br/>
+        <button onclick="jsonData('/controller/assign')">分配</button>
+        <br/>
+        <button onclick="jsonData('/controller/confirm')">待确认查询</button>
+        <br/>
+        <button onclick="jsonData('/driver/confirm')">确认</button>
+        <br/>
+        <button onclick="jsonData('/controller/transport')">待签收查询</button>
         <div class="message">
             <table id="tb">
             </table>
@@ -106,33 +120,17 @@
         server.sendMessage(message);
     }
 
-    function stringData()
+    jsonData = function(aim)
     {
         $.ajax({
-            url:"http://" + window.location.host + "/hello",
-            xhrFields:{withCredentials:true},
-            type:'get',
-            data:{username:$("#text").val(),password:"admin"},
-            contentType:"application/x-www-form-urlencoded",
-            success:function (data)
-            {
-                alert(data);
-            },error:function (error) {
-                alert(error);
-            }
-        })
-    }
-
-    function jsonData()
-    {
-        $.ajax({
-            url:"http://" + window.location.host + "/controller/allocation",
+            url:"http://" + window.location.host + aim,
             xhrFields:{withCredentials:true},
             type:'post',
-            data:{username:$("#usrname").val(),password:$("#passwd").val()},
+            data:{username:$("#usrname").val(),password:$("#passwd").val(),id:$("#usrname").val(),terNumber:$("#passwd").val()},
             contentType:"application/x-www-form-urlencoded",
             success:function (data)
             {
+                console.log(data);
                 alert(data);
             },error:function (error) {
                 alert(error);

@@ -20,12 +20,12 @@ public class OrderService {
         return orderRepository.findByStatus(status);
     }
 
-    public List<Orders> findByCustomerAndStatus(long number,int status)
+    public List<Orders> findByCustomerAndStatus(String number,int status)
     {
         return orderRepository.findByCumsNumberAndStatus(number,status);
     }
 
-    public List<Orders> findByDriverAndStatus(long number,int status)
+    public List<Orders> findByDriverAndStatus(String number,int status)
     {
         return orderRepository.findByDriNumberAndStatus(number,status);
     }
@@ -35,11 +35,12 @@ public class OrderService {
         return orderRepository.findOne(id);
     }
 
-    public boolean isWorking(long number)
+    public boolean isWorking(String number)
     {
         List<Orders> driver1 = orderRepository.findByDriNumberAndStatus(number,Orders.待确认);
         List<Orders> driver2 = orderRepository.findByDriNumberAndStatus(number,Orders.待签收);
-        if(driver1 == null && driver2 == null)
+
+        if(driver1.isEmpty() && driver2.isEmpty())
         {
             return false;
         }
@@ -54,6 +55,22 @@ public class OrderService {
             return false;
         }
         orders.setStatus(status);
+        orderRepository.save(orders);
+        return true;
+    }
+
+    public boolean alterStatus(long id,int status,String number)
+    {
+        Orders orders = findOne(id);
+        if(orders == null)
+        {
+            return false;
+        }
+        orders.setStatus(status);
+        orders.setDriNumber(number);
+
+        orderRepository.save(orders);
+
         return true;
     }
 }

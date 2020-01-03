@@ -159,6 +159,7 @@ public class JT808Endpoint {
     @Mapping(types = 终端注销, desc = "终端注销")
     public Message 终端注销(Message message, Session session) {
         //TODO
+
         CommonResult result = new CommonResult(终端注销, message.getSerialNumber(), CommonResult.Success);
         return new Message(平台通用应答, session.currentFlowId(), message.getMobileNumber(), result);
     }

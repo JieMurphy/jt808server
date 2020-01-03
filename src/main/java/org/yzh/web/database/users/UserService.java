@@ -20,7 +20,7 @@ public class UserService {
         return true;
     }
 
-    public User findByNumber(Long number)
+    public User findByNumber(String number)
     {
         return userRepository.findByNumber(number);
     }
@@ -39,7 +39,7 @@ public class UserService {
         return true;
     }
 
-    public boolean judge(Long number)
+    public boolean judge(String number)
     {
         if(userRepository.findByNumber(number) == null)
         {
@@ -51,5 +51,11 @@ public class UserService {
     public List<User> list()
     {
         return userRepository.findAll();
+    }
+
+
+    public User findByTerNumber(String number)
+    {
+        return userRepository.findByTerNumber(number);
     }
 }

@@ -5,6 +5,9 @@ import javax.persistence.*;
 @Entity
 @Table
 public class Goods {
+    public static int 水果 = 1;
+    public static int 蔬菜 = 2;
+    public static int 谷物 = 3;
 
     @Id
     @GeneratedValue
@@ -12,7 +15,7 @@ public class Goods {
 
     @Column
     private String goodName;
-    private String kind;
+    private int kind;
     private float price;
 
     public Goods()
@@ -20,7 +23,7 @@ public class Goods {
         super();
     }
 
-    public Goods(String goodName,String kind,float price)
+    public Goods(String goodName,int kind,float price)
     {
         super();
         this.goodName = goodName;
@@ -38,12 +41,12 @@ public class Goods {
         return goodName;
     }
 
-    public void setKind(String kind)
+    public void setKind(int kind)
     {
         this.kind = kind;
     }
 
-    public String getKind() {
+    public int getKind() {
         return kind;
     }
 
@@ -54,5 +57,9 @@ public class Goods {
 
     public float getPrice() {
         return price;
+    }
+
+    public long getId() {
+        return id;
     }
 }

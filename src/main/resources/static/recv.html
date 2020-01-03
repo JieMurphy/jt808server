@@ -105,6 +105,7 @@
                 }
             })
         }
+
     </script>
     <style type="text/css">
         .header{border-bottom:1px solid #ccc;margin-bottom:0px;height: 40px}
@@ -112,35 +113,22 @@
         .sidebar{width:180px;float:left;margin-right:-180px;border-right:1px solid #ccc;min-height:860px;padding:5px;}
         .main{float:left;margin-left:180px;padding:5px;min-height: 860px;min-width: 1740px;background-image: url("852.jpg");
         }
-        .main1{float:left;min-width: 1240px;min-height: 850px;}
-        .main2{min-width: 500px;min-height: 850px;}
         .menu_title {
         }
         .menu_title SPAN {
             FONT-WEIGHT: bold; LEFT: 7px; COLOR: #215dc6; POSITION: relative; TOP: 2px
         }
-        .menu_title2 {
-        }
         .menu_title2 SPAN {
             FONT-WEIGHT: bold; LEFT: 8px; COLOR: #428eff; POSITION: relative; TOP: 2px
         }
         .class1{
-            font-family: 楷体;
-            font-size: 35px;
-        }
-        #js2{
-            border: black;
+            border: 1px solid black;
         }
         #js1{
             height: 60px;
             font-size: 35px;
             font-family: 楷体;
         }
-        #js1 th,td{
-            font-size: 35px;
-            font-family: 楷体;
-        }
-
     </style>
     <link rel="stylesheet" href="css.css" type="text/css">
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
@@ -164,7 +152,6 @@
 </div>
 <div class="MainContainer">
     <div class="sidebar" style="background-color: #d6dff7">
-
         <table cellSpacing=0 cellPadding=0 width=158 align=center >
             <tbody>
             <tr>
@@ -191,8 +178,7 @@
                             <tr>
                                 <td background=admin_left_2.gif height=30><a href="javascript:history()" target=mainFrame style="font-size: 20px;font-family: 华文行楷;color:rgb(82,123,255)">&nbsp;历史订单</a></td>
                             </tr>
-                            </tbody>
-                        </table>
+                            </tbody></table>
                     </div>
                 </td>
             </tr>
@@ -202,7 +188,7 @@
             <tbody>
             <tr>
                 <td class=menu_title id=menuTitle2
-                    onmouseover="this.className='menu_title2';" onclick=show(1)
+                    onclick=show(1)
                     onmouseout="this.className='menu_title';"
                     background=admin_left_1.gif height=30>
                     <span><b style="font-size: 25px;font-family: 楷体">车辆状况</b></span></td>
@@ -225,140 +211,54 @@
             </tr>
             </tbody>
         </table>
+
     </div>
     <div  id="main" class="main">
-        <div class="main1">
         <br><br>
         <table class="table table-hover" border="1px" bordercolor="black" id="js1">
-            <tr>
-                    <th style="border-color: black">订单号</th>
-                    <th style="border-color: black">发起时间</th>
-                    <th style="border-color: black">发起人</th>
-                    <th style="border-color: black">起点</th>
-                    <th style="border-color: black">终点</th>
-                    <th style="border-color: black">商品</th>
-                    <th style="border-color: black">一键确认</th>
+            <tr style="height: 60px;font-size: 35px;font-family: 楷体;border-color: black">
+                    <th>订单号</th>
+                    <th>发起时间</th>
+                    <th>发起人</th>
+                    <th>起点</th>
+                    <th>终点</th>
+                    <th>商品</th>
+                    <th>终端号码</th>
+                    <th>订单状态</th>
             </tr>
             <tr>
-                <td >0001</td>
+                <td style="font-size: 30px">0001</td>
                 <td style="font-size: 30px">2019.12.30</td>
                 <td style="font-size: 30px">Jack</td>
                 <td style="font-size: 30px">南京</td>
                 <td style="font-size: 30px">扬州</td>
                 <td style="font-size: 30px">毛巾</td>
-                <td style="font-size: 30px" ><button onclick="data2()" style="margin-left: 50px">确认 </button></td>
-               <!-- <td style="font-size: 30px"><select style="margin-left: 30px"><option value="">--在线司机--</option> <option value="老王">老王</option><option value="老李">老李</option><option value="老刘">老刘</option> </select></td>
-                <td style="font-size: 30px"><button onclick="Send()"style="margin-left: 50px">派送</button></td> -->
-            </tr>
-            <tr>
-                <td >0001</td>
-                <td style="font-size: 30px">2019.12.30</td>
-                <td style="font-size: 30px">Jack</td>
-                <td style="font-size: 30px">南京</td>
-                <td style="font-size: 30px">扬州</td>
-                <td style="font-size: 30px">毛巾</td>
-                <td style="font-size: 30px" ><button onclick="data2()" style="margin-left: 50px">确认 </button></td>
-                <!-- <td style="font-size: 30px"><select style="margin-left: 30px"><option value="">--在线司机--</option> <option value="老王">老王</option><option value="老李">老李</option><option value="老刘">老刘</option> </select></td>
-                 <td style="font-size: 30px"><button onclick="Send()"style="margin-left: 50px">派送</button></td> -->
+                <td style="font-size: 30px">0010</td>
+                <td style="font-size: 30px">待确认</td>
             </tr>
         </table>
         <br><br><br>
-
-
         <ul class="pagination" style="margin-left: 650px">
             <li class="dropdown-toggled" ><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">第一页</a></li>
-            <li class="active"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">1</a> </li>
-            <li class="dropdown-toggled"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">2</a></li>
-            <li class="dropdown-toggled"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">3</a></li>
-            <li class="disabled"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">最后一页</a></li>
+            <li class="dropdown-toggled"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">4</a> </li>
+            <li class="active"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">5</a> </li>
+            <li class="dropdown-toggled"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">6</a> </li>
+            <li class="disabled"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">最后一页</a> </li>
         </ul>
-        </div>
-        <div class="main2">
-            <br><br>
-            <div class="class1">
-            <table border="1px" id="js2">
-                <tr>
-                    <th height="66px">&nbsp;在线终端</th>
-                    <th>一键派送</th>
-                </tr>
-
-            </table>
-            </div>
-        </div>
     </div>
 </div>
-<script>
-    function getDate2(){
-        var temp = '';
-        $.ajax({
-            type: "post",
-            url: "http://" + window.location.host +"/controller/terminals",
-            xhrFields: {withCredentials:true},
-            contentType:"application/x-www-form-urlencoded",
-            dataType: "json",
-            success: function(res) {
-                console.log(res);
-                var list = res;
-                for(var $i = 0; $i < list.length; $i++) {
-                    var a=list[$i].terminalId;
-                    temp +=
-                    '<tr>' +
-                    '<td height="66px" style="font-size: 30px">' + a + '</td>' +
-                    '<td height="66px" style="font-size: 30px">' + '<button style="width:100px;height:50px;margin-left: 30px" onclick="Send(list[$i].terminalId)" style="margin-left: 50px">' + "派送" + '</button>' + '</td>' +
-                    '</tr >';
-                }
-                $("#js2 tr:not(:first)").html(""); /*  除了第一行tr的内容，其余内容清空，防止获取重复的数据  */
-                $("#js2").append(temp);
-            },
-            error:function (error) {
-                alert(error);
-            }
-        });
-    }
 
-    function data2() {
-        console.log("da")
-        var temp="";
-        var a="1001";
-            temp +=
-                '<tr>' +
-                '<td height="66px" style="font-size: 30px">' + a+ '</td>' +
-                '<td height="66px" style="font-size: 30px">' + '<button style="width:100px;height:50px;margin-left: 30px" onclick="Send(1001)" style="margin-left: 50px">' + "派送" + '</button>' + '</td>' +
-                '</tr >'+
-                '<tr>' +
-                '<td height="66px" style="font-size: 30px">' + a+ '</td>' +
-                '<td height="66px" style="font-size: 30px">' + '<button style="width:100px;height:50px;margin-left: 30px" onclick="Send()" style="margin-left: 50px">' + "派送" + '</button>' + '</td>' +
-                '</tr >';
-            $("#js2 tr:not(:first)").html(""); /*  除了第一行tr的内容，其余内容清空，防止获取重复的数据  */
-            $("#js2").append(temp);
-    }
-    function Send(str)
-    {
-        var a=str;
-        console.log("6660");
-        console.log(a);
-        $.ajax({
-            url:"http://" + window.location.host +"/controller/",
-            type:'post',
-            data:{terminalid:"a"},
-            success:function(data){
-                window.location.href="http://" + window.location.host +"/"
-            },
-            error:function (error) {
-                alert(error);
-            }
-        })
-    }
+<script>
     function getDate1() {
         var temp = '';
         $.ajax({
             type: "post",
-            url: "http://" + window.location.host +"/controller/allocation",
+            url: "http://" + window.location.host +"/controller/confirm",
             xhrFields: {withCredentials:true},
             contentType:"application/x-www-form-urlencoded",
             dataType: "json",
             success: function(res) {
-                var list = res;
+                var list = res
                 for(var $i = 0; $i < list.length; $i++) {
                     var d = new Date(list[$i].startTime).toLocaleDateString();
                     temp +=
@@ -369,14 +269,14 @@
                         '<td style="font-size: 30px">' + list[$i].startAddress + '</td>' +
                         '<td style="font-size: 30px">' + list[$i].endAddress + '</td>' +
                         '<td style="font-size: 30px">' + list[$i].goodName + '</td>' +
-                        '<td style="font-size: 30px">' + '<button onclick="getDate2()"  style="margin-left: 50px">' + "确认" + '</button>' + '</td>' +
+                        '<td style="font-size: 30px">' + list[$i].terminalId +  '</td>' +
+                        '<td style="font-size: 30px">' + "待确认" +  '</td>' +
                         '</tr >';
                 }
                 $("#js1 tr:not(:first)").html(""); /*  除了第一行tr的内容，其余内容清空，防止获取重复的数据  */
                 $("#js1").append(temp);
             },
             error:function (error) {
-                console.log(error);
                 alert(error);
             }
         });

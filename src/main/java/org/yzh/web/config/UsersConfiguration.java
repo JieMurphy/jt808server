@@ -19,6 +19,9 @@ public class UsersConfiguration extends WebMvcConfigurerAdapter {
         loginRegistry.excludePathPatterns("/");
         loginRegistry.excludePathPatterns("/login");
 
+        loginRegistry.excludePathPatterns("/*/login");
+        loginRegistry.excludePathPatterns("/*/sign");
+
         loginRegistry.excludePathPatterns("/controller/*");
     }
 }
