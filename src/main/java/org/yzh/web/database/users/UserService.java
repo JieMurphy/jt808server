@@ -12,7 +12,7 @@ public class UserService {
 
     public boolean save(User user)
     {
-        if(findByNumber(user.getNumber()) != null)
+        if(findByNumber(user.getNumber()) != null && userRepository.findByUsername(user.getUsername()) != null)
         {
             return false;
         }

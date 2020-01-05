@@ -1,10 +1,9 @@
 package org.yzh.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.yzh.framework.TCPServerHandler;
 import org.yzh.framework.session.Session;
 import org.yzh.web.config.SessionKey;
@@ -18,8 +17,8 @@ import org.yzh.web.database.users.UserService;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-
-@Controller
+@CrossOrigin(allowCredentials = "true",allowedHeaders = "*")
+@RestController
 public class UsersController {
 
     @Autowired
@@ -31,10 +30,7 @@ public class UsersController {
     @Autowired
     private GoodService goodService;
 
-
-    @CrossOrigin(allowCredentials = "true",allowedHeaders = "*")
     @PostMapping(value = "/controller/login",consumes = "application/x-www-form-urlencoded")
-    @ResponseBody
     public String login(HttpServletRequest request)
     {
         String username = request.getParameter("username");
@@ -54,9 +50,7 @@ public class UsersController {
         return "success";
     }
 
-    @CrossOrigin(allowCredentials = "true",allowedHeaders = "*")
     @PostMapping(value = "/controller/sign", consumes = "application/x-www-form-urlencoded")
-    @ResponseBody
     public String sign(HttpServletRequest request)
     {
         Goods goods = new Goods("香蕉",Goods.水果,12);
@@ -81,65 +75,50 @@ public class UsersController {
         return "注册成功！！！";
     }
 
-    @CrossOrigin(allowCredentials = "true",allowedHeaders = "*")
     @PostMapping(value = "/controller/allocation", consumes = "application/x-www-form-urlencoded")
-    @ResponseBody
     public List<Orders> allocation()
     {
         System.out.println("分配");
         return  orderService.findByStatus(Orders.待分配);
     }
 
-    @CrossOrigin(allowCredentials = "true",allowedHeaders = "*")
     @PostMapping(value = "/controller/confirm", consumes = "application/x-www-form-urlencoded")
-    @ResponseBody
     public List<Orders> confirm()
     {
         System.out.println("确认");
         return  orderService.findByStatus(Orders.待确认);
     }
 
-    @CrossOrigin(allowCredentials = "true",allowedHeaders = "*")
     @PostMapping(value = "/controller/transport", consumes = "application/x-www-form-urlencoded")
-    @ResponseBody
     public List<Orders> transport()
     {
         System.out.println("运送");
         return  orderService.findByStatus(Orders.待签收);
     }
 
-    @CrossOrigin(allowCredentials = "true",allowedHeaders = "*")
-    @PostMapping(value = "/controller/hository", consumes = "application/x-www-form-urlencoded")
-    @ResponseBody
+    @PostMapping(value = "/controller/history", consumes = "application/x-www-form-urlencoded")
     public List<Orders> hository()
     {
         System.out.println("完成");
         return  orderService.findByStatus(Orders.已签收);
     }
 
-    @CrossOrigin(allowCredentials = "true",allowedHeaders = "*")
     @PostMapping(value = "/controller/terminals", consumes = "application/x-www-form-urlencoded")
-    @ResponseBody
     public List<Session> terminals()
     {
         return TCPServerHandler.sessionManager.toList();
     }
 
-    @CrossOrigin(allowCredentials = "true",allowedHeaders = "*")
     @PostMapping(value = "/controller/assign", consumes = "application/x-www-form-urlencoded")
-    @ResponseBody
     public String assign(HttpServletRequest request) {
+        System.out.println("分为");
         Object number = request.getSession().getAttribute(SessionKey.USER_ID);
-        if (number == null || !(number instanceof String))
-        {
-            return "fail";
-        }
         if(userService.findByNumber(number.toString()).getPower() != User.管理员)
         {
             return "fail";
         }
         long id = Long.parseLong(request.getParameter("id"));
-        String terNumber = request.getParameter("terNumber");
+        String terNumber = request.getParameter("terminalId");
         User driver = userService.findByTerNumber(terNumber);
         if(driver == null)
         {
@@ -156,9 +135,7 @@ public class UsersController {
         return "success";
     }
 
-    @CrossOrigin(allowCredentials = "true",allowedHeaders = "*")
     @PostMapping(value = "/driver/confirm", consumes = "application/x-www-form-urlencoded")
-    @ResponseBody
     public String confirmed(HttpServletRequest request)
     {
         Object number = request.getSession().getAttribute(SessionKey.USER_ID);

@@ -13,10 +13,10 @@ import java.util.List;
 public class PositionReport extends AbstractBody {
 
     private Integer warningMark;
-    private Integer status;
-    private Integer latitude;
-    private Integer longitude;
-    private Integer altitude;
+    private Integer status;//状态位
+    private Integer latitude;//纬度
+    private Integer longitude;//经度
+    private Integer altitude;//海拔
     private Integer speed;
     private Integer direction;
     private String dateTime;

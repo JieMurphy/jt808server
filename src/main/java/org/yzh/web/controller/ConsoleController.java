@@ -55,4 +55,22 @@ public class ConsoleController {
     {
         return "forward:/recv.html";
     }
+
+    @GetMapping(value = "/signed")
+    public String sign()
+    {
+        return "forward:/transport.html";
+    }
+
+    @GetMapping(value = "/histories")
+    public String history()
+    {
+        return "forward:/history.html";
+    }
+
+    @GetMapping(value = "/welocome")
+    public String welcome()
+    {
+        return "forward:/welcome.html";
+    }
 }

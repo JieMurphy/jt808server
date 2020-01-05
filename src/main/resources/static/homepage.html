@@ -47,74 +47,19 @@
                 eval("submenu" + sid + ".style.display=\"none\";");
             }
         }
-        function history() {
-            $.ajax({
-                url:"http://" + window.location.host +"/controller/",
-                type:'get',
-                success:function (data)
-                {
-                    window.location.href="http://" + window.location.host +"/"
-                },error:function (error) {
-                    console.log(error);
-                }
-            })
-        }
-        function allocation() {
-            $.ajax({
-                url:"http://" + window.location.host +"/controller/allocation",
-                type:'post',
-                success:function (data)
-                {
-                    if(data == "success")
-                    {
-                        window.location.href="http://" + window.location.host +"/allocation"
-                    }
-                    else alert(data);
-                },error:function (error) {
-                    console.log(error);
-                }
-            })
-        }
 
-        function recv() {
-            $.ajax({
-                url:"http://" + window.location.host +"/controller/",
-                type:'get',
-                success:function (data)
-                {
-                    window.location.href="http://" + window.location.host +"/"
-                },error:function (error) {
-                    console.log(error);
-                }
-            })
-        }
-
-        function sign() {
-            $.ajax({
-                url:"http://" + window.location.host +"/controller/",
-                type:'get',
-                success:function (data)
-                {
-                    window.location.href="http://" + window.location.host +"/"
-                },error:function (error) {
-                    console.log(error);
-                }
-            })
-        }
     </script>
     <style type="text/css">
         .header{border-bottom:1px solid #ccc;margin-bottom:0px;height: 40px;background-image: url("879.png")}
         .MainContainer{min-width:960px;max-width:1600px;}
         .sidebar{width:180px;float:left;margin-right:-180px;border-right:1px solid #ccc;min-height:860px;padding:5px;}
-        .main{float:left;margin-left:180px;padding:5px;min-height: 860px;min-width: 1740px;
+        .main{margin-left:180px;min-height: 860px;min-width: 1740px;
             background-image: url("88.jpg");
         }
         .menu_title {
         }
         .menu_title SPAN {
             FONT-WEIGHT: bold; LEFT: 7px; COLOR: #215dc6; POSITION: relative; TOP: 2px
-        }
-        .menu_title2 {
         }
         .menu_title2 SPAN {
             FONT-WEIGHT: bold; LEFT: 8px; COLOR: #428eff; POSITION: relative; TOP: 2px
@@ -128,17 +73,17 @@
 </head>
 <body onload = "showTime()">
 <div class="header">
-<table cellSpacing=0 cellPadding=0 width="100%" align=center border=0 style="height: 40px">
-    <tbody>
-    <tr>
-        <td class=txlHeaderBackgroundAlternate width="43%" height=23 style="font-size: 20px;font-family: 楷体">&nbsp;&nbsp;→ 欢迎你进入物流管理</td>
-        <td class=txlHeaderBackgroundAlternate  width="29%" value="button" style="font-size: 20px;font-family: 楷体"><div id = "DT"></div></td>
-        <td class=txlHeaderBackgroundAlternate vAlign=center align=right width="28%">
-            <u><a href="homepage.html"  target=mainFrame style="font-size: 18px;color: #f5f5dc;font-family: 楷体">返回主窗口</a></u>
-        </td>
-    </tr>
-    </tbody>
-</table>
+    <table cellSpacing=0 cellPadding=0 width="100%" align=center border=0 style="height: 40px">
+        <tbody>
+        <tr>
+            <td class=txlHeaderBackgroundAlternate width="43%" height=23 style="font-size: 20px;font-family: 楷体">&nbsp;&nbsp;→ 欢迎你进入物流管理</td>
+            <td class=txlHeaderBackgroundAlternate  width="29%" value="button" style="font-size: 20px;font-family: 楷体"><div id = "DT"></div></td>
+            <td class=txlHeaderBackgroundAlternate vAlign=center align=right width="28%">
+                <u><a href="homepage.html"  target=mainFrame style="font-size: 18px;color: #f5f5dc;font-family: 楷体">返回主窗口</a></u>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 <div class="MainContainer">
     <div class="sidebar" style="background-color: #d6dff7">
@@ -158,21 +103,21 @@
                         <table cellSpacing=0 cellPadding=0 width=158 align=center>
                             <tbody>
                             <tr>
-                                <td background=admin_left_2.gif height=30><a href="/allocation" target="mainFrame" style="font-size: 20px;font-family: 华文行楷;color: rgb(82,123,255)">&nbsp;待发配订单</a></td>
+                                <td background=admin_left_2.gif height=30><a href="/allocation"  target="demo" style="font-size: 20px;font-family: 华文行楷;color: rgb(82,123,255)">&nbsp;待发配订单</a></td>
                             </tr>
                             <tr>
-                                <td background=admin_left_2.gif height=30><a href="/confirm" target="mainFrame" style="font-size: 20px;font-family: 华文行楷;color: rgb(82,123,255)">&nbsp;待接受订单</a></td>
+                                <td background=admin_left_2.gif height=30><a href="/confirm" target="demo" style="font-size: 20px;font-family: 华文行楷;color: rgb(82,123,255)">&nbsp;待接受订单</a></td>
                             </tr>
                             <tr>
-                                <td background=admin_left_2.gif height=30><a href="javascript:sign()" target="mainFrame" style="font-size: 20px;font-family: 华文行楷;color: rgb(82,123,255)">&nbsp;待签收订单</a></td>
+                                <td background=admin_left_2.gif height=30><a href="/signed" target="demo" style="font-size: 20px;font-family: 华文行楷;color: rgb(82,123,255)">&nbsp;待签收订单</a></td>
                             </tr>
                             <tr>
-                                <td background=admin_left_2.gif height=30><a href="javascript:history()" target=mainFrame style="font-size: 20px;font-family: 华文行楷;color:rgb(82,123,255)">&nbsp;历史订单</a></td>
+                                <td background=admin_left_2.gif height=30><a href="/histories" target="demo" style="font-size: 20px;font-family: 华文行楷;color:rgb(82,123,255)">&nbsp;历史订单</a></td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
-                   </td>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -183,23 +128,13 @@
                     onmouseover="this.className='menu_title2';" onclick=show(1)
                     onmouseout="this.className='menu_title';"
                     background=admin_left_1.gif height=30>
-                    <span><B style="font-size: 25px;font-family: 楷体">车辆状况</B></span></td>
+                    <span><b><a style="font-size: 25px;font-family: 楷体" href="car.html" target="demo">车辆状况</a></b></span></td>
             </tr>
             </tbody>
         </table>
-
     </div>
-    <div  id="main" class="main">
-        <input type="image" src="1234.jpg" style="height: 150px;width: 200px">
-        <br>
-        <a style="font-family: 楷体;font-size: 60px;margin-left: 650px;color: rgb(255,0,153) ">物流中心</a>
-        <br>
-        <a style="margin-left: 350px;font-size: 80px;font-family: 华文行楷;color: rgba(153,0,204,0.52)">您好！</a>
-        <br><br>
-        <a style="font-family: 华文行楷;font-size: 50px;margin-left: 350px;color:rgba(153,0,204,0.63) ">物流中心管理员，欢迎进入:</a>
-        <br>
-        <a style="font-family: 华文行楷;font-size: 40px;margin-left: 450px;color:rgba(153,0,204,0.67)">该界面的作用是对物流后台的管理，您可以点击&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;左侧功能选项进行相应的操作.</a>
+    <div class="main">
+        <iframe  src="/welocome"  name="demo" height="857px" width="100%" frameborder=0></iframe>
     </div>
 </div>
 </body>

@@ -10,116 +10,13 @@
             height: 50px;
         }
     </style>
-    <script>
-        function showTime()
-        {
-            var myTime = new Date();
-            var monthArray = new Array("1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月");
-            var dayArray = new Array("星期日","星期一","星期二","星期三","星期四","星期五","星期六");
-            var year = myTime.getFullYear();
-            var date = myTime.getDate();
-            var hours = myTime.getHours();
-            var minutes = myTime.getMinutes();
-            var seconds = myTime.getSeconds();
-            var suf = "AM"
-            if(hours>12)
-            {
-                suf = "PM";
-                hours =hours - 12;
-            }
-            if(hours == 0)
-            {
-                hours = 12;
-            }
-            if(minutes <= 9)
-            {
-                minutes = "0" + minutes;
-            }
-            if(seconds <= 9)
-            {
-                seconds = "0" + seconds;
-            }
-            var theTime = "今天是：" + year + "年 " + monthArray[myTime.getMonth()] + date + "日 " + dayArray[myTime.getDay()] + " 当前时间 " + hours + ":" + minutes + ":" + seconds +  suf;
-            DT.innerHTML = theTime;
-            setTimeout("showTime()",1000);
-        }
-        function show(sid)
-        {
-            whichEl = eval("submenu" + sid);
-            if (whichEl.style.display == "none")
-            {
-                eval("submenu" + sid + ".style.display=\"\";");
-            }
-            else
-            {
-                eval("submenu" + sid + ".style.display=\"none\";");
-            }
-        }
-        function history() {
-            $.ajax({
-                url:"http://" + window.location.host +"/controller/",
-                type:'get',
-                success:function (data)
-                {
-                    window.location.href="http://" + window.location.host +"/"
-                },error:function (error) {
-                    console.log(error);
-                }
-            })
-        }
-        function allocation() {
-            $.ajax({
-                url:"http://" + window.location.host +"/controller/",
-                type:'get',
-                success:function (data)
-                {
-                    window.location.href="http://" + window.location.host +"/"
-                },error:function (error) {
-                    console.log(error);
-                }
-            })
-        }
-
-        function recv() {
-            $.ajax({
-                url:"http://" + window.location.host +"/controller/",
-                type:'get',
-                success:function (data)
-                {
-                    window.location.href="http://" + window.location.host +"/"
-                },error:function (error) {
-                    console.log(error);
-                }
-            })
-        }
-
-        function sign() {
-            $.ajax({
-                url:"http://" + window.location.host +"/controller/",
-                type:'get',
-                success:function (data)
-                {
-                    window.location.href="http://" + window.location.host +"/"
-                },error:function (error) {
-                    console.log(error);
-                }
-            })
-        }
-    </script>
     <style type="text/css">
-        .header{border-bottom:1px solid #ccc;margin-bottom:0px;height: 40px}
-        .MainContainer{min-width:960px;max-width:1600px;}
-        .sidebar{width:180px;float:left;margin-right:-180px;border-right:1px solid #ccc;min-height:860px;padding:5px;}
-        .main{float:left;margin-left:180px;padding:5px;min-height: 860px;min-width: 1740px;background-image: url("852.jpg");
+        .main{min-height: 800px;min-width: 1700px;background-image: url("852.jpg");
         }
         .main1{float:left;min-width: 1240px;min-height: 850px;}
         .main2{min-width: 500px;min-height: 850px;}
-        .menu_title {
-        }
         .menu_title SPAN {
             FONT-WEIGHT: bold; LEFT: 7px; COLOR: #215dc6; POSITION: relative; TOP: 2px
-        }
-        .menu_title2 {
         }
         .menu_title2 SPAN {
             FONT-WEIGHT: bold; LEFT: 8px; COLOR: #428eff; POSITION: relative; TOP: 2px
@@ -148,89 +45,12 @@
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
-<body onload = "showTime()">
-<div class="header">
-    <table cellSpacing=0 cellPadding=0 width="100%" align=center border=0 style="height: 40px">
-        <tbody>
-        <tr>
-            <td class=txlHeaderBackgroundAlternate width="43%" height=23 style="font-size: 20px;font-family: 楷体">&nbsp;&nbsp;→ 欢迎你进入物流管理</td>
-            <td class=txlHeaderBackgroundAlternate  width="29%" value="button" style="font-size: 20px;font-family: 楷体"><div id = "DT"></div></td>
-            <td class=txlHeaderBackgroundAlternate vAlign=center align=right width="28%">
-                <u><a href="homepage.html"  target=mainFrame style="font-size: 18px;color: #f5f5dc;font-family: 楷体">返回主窗口</a></u>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-<div class="MainContainer">
-    <div class="sidebar" style="background-color: #d6dff7">
-
-        <table cellSpacing=0 cellPadding=0 width=158 align=center >
-            <tbody>
-            <tr>
-                <td class=menu_title id=menuTitle1
-                    onmouseover="this.className='menu_title2';" onclick=show(0)
-                    onmouseout="this.className='menu_title';"
-                    background=admin_left_1.gif height="30">
-                    <span><b style="font-size: 25px;font-family: 楷体">订单状况</b></span></td>
-            </tr>
-            <tr>
-                <td id=submenu0 style="display:none">
-                    <div class=sec_menu style="WIDTH: 158px ">
-                        <table cellSpacing=0 cellPadding=0 width=158 align=center>
-                            <tbody>
-                            <tr>
-                                <td background=admin_left_2.gif height=30><a href="javascript:allocation()" target="mainFrame" style="font-size: 20px;font-family: 华文行楷;color: rgb(82,123,255)">&nbsp;待发配订单</a></td>
-                            </tr>
-                            <tr>
-                                <td background=admin_left_2.gif height=30><a href="javascript:recv()" target="mainFrame" style="font-size: 20px;font-family: 华文行楷;color: rgb(82,123,255)">&nbsp;待接受订单</a></td>
-                            </tr>
-                            <tr>
-                                <td background=admin_left_2.gif height=30><a href="javascript:sign()" target="mainFrame" style="font-size: 20px;font-family: 华文行楷;color: rgb(82,123,255)">&nbsp;待签收订单</a></td>
-                            </tr>
-                            <tr>
-                                <td background=admin_left_2.gif height=30><a href="javascript:history()" target=mainFrame style="font-size: 20px;font-family: 华文行楷;color:rgb(82,123,255)">&nbsp;历史订单</a></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <table cellSpacing=0 cellPadding=0 width=158 align=center >
-            <tbody>
-            <tr>
-                <td class=menu_title id=menuTitle2
-                    onmouseover="this.className='menu_title2';" onclick=show(1)
-                    onmouseout="this.className='menu_title';"
-                    background=admin_left_1.gif height=30>
-                    <span><b style="font-size: 25px;font-family: 楷体">车辆状况</b></span></td>
-            </tr>
-            <tr>
-                <td id=submenu1 style="display:none">
-                    <div class=sec_menu style="WIDTH: 158px ">
-                        <table cellSpacing=0 cellPadding=0 width=158 align=center>
-                            <tbody>
-                            <tr>
-                                <td  background=admin_left_2.gif height=30><A  href="#" target=mainFrame style="font-size: 20px;font-family: 楷体">&nbsp;实时位置</A></td>
-                            </tr>
-                            <tr>
-                                <td  background=admin_left_2.gif height=30><a href="#" target="mainFrame" style="font-size: 20px;font-family: 楷体">&nbsp;车辆时速</a></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+<body>
     <div  id="main" class="main">
         <div class="main1">
-        <br><br>
-        <table class="table table-hover" border="1px" bordercolor="black" id="js1">
-            <tr>
+            <br><br>
+            <table class="table table-hover" border="1px" bordercolor="black" id="js1">
+                <tr>
                     <th style="border-color: black">订单号</th>
                     <th style="border-color: black">发起时间</th>
                     <th style="border-color: black">发起人</th>
@@ -238,57 +58,56 @@
                     <th style="border-color: black">终点</th>
                     <th style="border-color: black">商品</th>
                     <th style="border-color: black">一键确认</th>
-            </tr>
-            <tr>
-                <td >0001</td>
-                <td style="font-size: 30px">2019.12.30</td>
-                <td style="font-size: 30px">Jack</td>
-                <td style="font-size: 30px">南京</td>
-                <td style="font-size: 30px">扬州</td>
-                <td style="font-size: 30px">毛巾</td>
-                <td style="font-size: 30px" ><button onclick="data2()" style="margin-left: 50px">确认 </button></td>
-               <!-- <td style="font-size: 30px"><select style="margin-left: 30px"><option value="">--在线司机--</option> <option value="老王">老王</option><option value="老李">老李</option><option value="老刘">老刘</option> </select></td>
-                <td style="font-size: 30px"><button onclick="Send()"style="margin-left: 50px">派送</button></td> -->
-            </tr>
-            <tr>
-                <td >0001</td>
-                <td style="font-size: 30px">2019.12.30</td>
-                <td style="font-size: 30px">Jack</td>
-                <td style="font-size: 30px">南京</td>
-                <td style="font-size: 30px">扬州</td>
-                <td style="font-size: 30px">毛巾</td>
-                <td style="font-size: 30px" ><button onclick="data2()" style="margin-left: 50px">确认 </button></td>
-                <!-- <td style="font-size: 30px"><select style="margin-left: 30px"><option value="">--在线司机--</option> <option value="老王">老王</option><option value="老李">老李</option><option value="老刘">老刘</option> </select></td>
-                 <td style="font-size: 30px"><button onclick="Send()"style="margin-left: 50px">派送</button></td> -->
-            </tr>
-        </table>
-        <br><br><br>
+                </tr>
+                <tr>
+                    <td >0001</td>
+                    <td style="font-size: 30px">2019.12.30</td>
+                    <td style="font-size: 30px">Jack</td>
+                    <td style="font-size: 30px">南京</td>
+                    <td style="font-size: 30px">扬州</td>
+                    <td style="font-size: 30px">毛巾</td>
+                    <td style="font-size: 30px" ><button onclick="data2()" style="margin-left: 50px">确认 </button></td>
+                </tr>
+                <tr>
+                    <td >0001</td>
+                    <td style="font-size: 30px">2019.12.30</td>
+                    <td style="font-size: 30px">Jack</td>
+                    <td style="font-size: 30px">南京</td>
+                    <td style="font-size: 30px">扬州</td>
+                    <td style="font-size: 30px">毛巾</td>
+                    <td style="font-size: 30px" ><button onclick="data2()" style="margin-left: 50px">确认 </button></td>
+                </tr>
+            </table>
+            <br><br><br>
 
 
-        <ul class="pagination" style="margin-left: 650px">
-            <li class="dropdown-toggled" ><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">第一页</a></li>
-            <li class="active"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">1</a> </li>
-            <li class="dropdown-toggled"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">2</a></li>
-            <li class="dropdown-toggled"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">3</a></li>
-            <li class="disabled"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">最后一页</a></li>
-        </ul>
+            <ul class="pagination" style="margin-left: 650px">
+                <li class="dropdown-toggled" ><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">第一页</a></li>
+                <li class="active"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">1</a> </li>
+                <li class="dropdown-toggled"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">2</a></li>
+                <li class="dropdown-toggled"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">3</a></li>
+                <li class="disabled"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">最后一页</a></li>
+            </ul>
         </div>
         <div class="main2">
             <br><br>
             <div class="class1">
-            <table border="1px" id="js2">
-                <tr>
-                    <th height="66px">&nbsp;在线终端</th>
-                    <th>一键派送</th>
-                </tr>
+                <table border="1px" id="js2">
+                    <tr>
+                        <th height="66px">&nbsp;在线终端</th>
+                        <th>一键派送</th>
+                    </tr>
 
-            </table>
+                </table>
             </div>
         </div>
     </div>
 </div>
 <script>
-    function getDate2(){
+    var c="";
+    var e="";
+    function getDate2(th){
+        c=$(th).parents("tr").find("#id").text();
         var temp = '';
         $.ajax({
             type: "post",
@@ -297,15 +116,14 @@
             contentType:"application/x-www-form-urlencoded",
             dataType: "json",
             success: function(res) {
-                console.log(res);
                 var list = res;
                 for(var $i = 0; $i < list.length; $i++) {
                     var a=list[$i].terminalId;
                     temp +=
-                    '<tr>' +
-                    '<td height="66px" style="font-size: 30px">' + a + '</td>' +
-                    '<td height="66px" style="font-size: 30px">' + '<button style="width:100px;height:50px;margin-left: 30px" onclick="Send(list[$i].terminalId)" style="margin-left: 50px">' + "派送" + '</button>' + '</td>' +
-                    '</tr >';
+                        '<tr>' +
+                        '<td id="id2" height="66px" style="font-size: 30px">' + a + '</td>' +
+                        '<td height="66px" style="font-size: 30px">' + '<button style="width:100px;height:50px;margin-left: 30px" onclick="Send(this)" style="margin-left: 50px">' + "派送" + '</button>' + '</td>' +
+                        '</tr >';
                 }
                 $("#js2 tr:not(:first)").html(""); /*  除了第一行tr的内容，其余内容清空，防止获取重复的数据  */
                 $("#js2").append(temp);
@@ -316,39 +134,27 @@
         });
     }
 
-    function data2() {
-        console.log("da")
-        var temp="";
-        var a="1001";
-            temp +=
-                '<tr>' +
-                '<td height="66px" style="font-size: 30px">' + a+ '</td>' +
-                '<td height="66px" style="font-size: 30px">' + '<button style="width:100px;height:50px;margin-left: 30px" onclick="Send(1001)" style="margin-left: 50px">' + "派送" + '</button>' + '</td>' +
-                '</tr >'+
-                '<tr>' +
-                '<td height="66px" style="font-size: 30px">' + a+ '</td>' +
-                '<td height="66px" style="font-size: 30px">' + '<button style="width:100px;height:50px;margin-left: 30px" onclick="Send()" style="margin-left: 50px">' + "派送" + '</button>' + '</td>' +
-                '</tr >';
-            $("#js2 tr:not(:first)").html(""); /*  除了第一行tr的内容，其余内容清空，防止获取重复的数据  */
-            $("#js2").append(temp);
-    }
-    function Send(str)
+    function Send(th)
     {
-        var a=str;
-        console.log("6660");
-        console.log(a);
+        e=$(th).parents("tr").find("#id2").text();
+        console.log(e + c);
         $.ajax({
-            url:"http://" + window.location.host +"/controller/",
+            url:"http://" + window.location.host +"/controller/assign",
             type:'post',
-            data:{terminalid:"a"},
+            data:{id:c,terminalId:e},
+            xhrFields: {withCredentials:true},
+            contentType:"application/x-www-form-urlencoded",
+            dataType: "json",
             success:function(data){
-                window.location.href="http://" + window.location.host +"/"
+                alert(data);
+               // window.location.href="http://" + window.location.host +"/confirm";
             },
             error:function (error) {
                 alert(error);
             }
-        })
+        });
     }
+
     function getDate1() {
         var temp = '';
         $.ajax({
@@ -363,13 +169,13 @@
                     var d = new Date(list[$i].startTime).toLocaleDateString();
                     temp +=
                         '<tr>' +
-                        '<td style="font-size: 30px">' + list[$i].id + '</td>' +
+                        '<td id="id" style="font-size: 30px">' + list[$i].id + '</td>' +
                         '<td style="font-size: 30px">' + d + '</td>' +
                         '<td style="font-size: 30px">' + list[$i].cumsNumber + '</td>' +
                         '<td style="font-size: 30px">' + list[$i].startAddress + '</td>' +
                         '<td style="font-size: 30px">' + list[$i].endAddress + '</td>' +
                         '<td style="font-size: 30px">' + list[$i].goodName + '</td>' +
-                        '<td style="font-size: 30px">' + '<button onclick="getDate2()"  style="margin-left: 50px">' + "确认" + '</button>' + '</td>' +
+                        '<td style="font-size: 30px">' + '<button onclick="getDate2(this)"  style="margin-left: 50px">' + "确认" + '</button>' + '</td>' +
                         '</tr >';
                 }
                 $("#js1 tr:not(:first)").html(""); /*  除了第一行tr的内容，其余内容清空，防止获取重复的数据  */
@@ -381,7 +187,8 @@
             }
         });
     }
-    getDate1();
+
+getDate1();
 </script>
 </body>
 </html>
