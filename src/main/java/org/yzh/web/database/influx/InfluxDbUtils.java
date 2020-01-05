@@ -6,32 +6,33 @@ import org.influxdb.dto.Point;
 import org.influxdb.dto.Point.Builder;
 import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;
+import org.springframework.beans.BeanWrapperImpl;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class InfluxDbUtils {
-    private String username;
-    private String password;
-    private String url;
-    private String database;
-    private String retentionPolicy;
+    private String username = "admin";//用户名
+    private String password = "admin";//密码
+    private String openurl = "http://127.0.0.1:8086";//连接地址
+    private String database = "test_db";//数据库
+    private String measurement = "sys_code";
 
     private InfluxDB influxDB;
 
-    public InfluxDbUtils(String username,String password,String url,String database,String retentionPolicy)
+    public InfluxDbUtils()
     {
-        this.username = username;
-        this.password = password;
-        this.database = database;
-        this.url = url;
-        this.retentionPolicy = retentionPolicy;
         this.influxDB = influxDbBuild();
     }
 
     private InfluxDB influxDbBuild() {
         if (influxDB == null)
         {
-            influxDB = InfluxDBFactory.connect(url,username,password);
+            influxDB = InfluxDBFactory.connect(openurl,username,password);
             influxDB.createDatabase(database);
         }
         return influxDB;
@@ -42,12 +43,98 @@ public class InfluxDbUtils {
         return influxDB.query(new Query(command,database));
     }
 
-    public void insert(String measurement, Map<String,String> tags,Map<String,Object> fields)
+    public void insert(CodeInfo codeInfo)
     {
+        Map<String,String> tags = new HashMap<>();
+        Map<String,Object> fields = new HashMap<>();
+
+        tags.put("TAG_CODE",codeInfo.getTagCode());
+        tags.put("TAG_NAME",codeInfo.getTagName());
+
+        fields.put("Altitude",codeInfo.getAltitude());
+        fields.put("Longitude",codeInfo.getLongitude());
+        fields.put("Latitude",codeInfo.getLatitude());
+        fields.put("Status",codeInfo.getStatus());
+
         Builder builder = Point.measurement(measurement);
         builder.tag(tags);
         builder.fields(fields);
 
         influxDB.write(database,"",builder.build());
+    }
+
+    public QueryResult queryAll()
+    {
+        String command = "select * from " + measurement;
+        return query(command);
+    }
+
+    public QueryResult queryByTernumberAndTime(String ternumber,String time)
+    {
+        String command = "select * from " + measurement + " where time >= '" + time + "' and TAG_NAME = '" + ternumber + "'";
+        return query(command);
+    }
+
+    public QueryResult queryByTernumberAndTime(String ternumber, Timestamp timestamp)
+    {
+        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long time = timestamp.getTime() - 8 * 60 * 60 * 1000;
+        String newTime = sd.format(time);
+        return queryByTernumberAndTime(ternumber,newTime);
+    }
+
+    public List<CodeInfo> turn(QueryResult queryResult)
+    {
+        if(queryResult.getResults() == null){
+            return null;
+        }
+        List<CodeInfo> lists = new ArrayList<CodeInfo>();
+        for (QueryResult.Result result : queryResult.getResults()) {
+
+            List<QueryResult.Series> series= result.getSeries();
+            for (QueryResult.Series serie : series) {
+//				Map<String, String> tags = serie.getTags();
+                List<List<Object>>  values = serie.getValues();
+                List<String> columns = serie.getColumns();
+
+                lists.addAll(getQueryData(columns, values));
+            }
+        }
+
+        return lists;
+    }
+
+    private List<CodeInfo> getQueryData(List<String> columns, List<List<Object>>  values){
+        List<CodeInfo> lists = new ArrayList<CodeInfo>();
+
+        for (List<Object> list : values) {
+            CodeInfo info = new CodeInfo();
+            BeanWrapperImpl bean = new BeanWrapperImpl(info);
+            for(int i=0; i< list.size(); i++){
+
+                String propertyName = setColumns(columns.get(i));//字段名
+                Object value = list.get(i);//相应字段值
+                bean.setPropertyValue(propertyName, value);
+            }
+
+            lists.add(info);
+        }
+
+        return lists;
+    }
+
+    private String setColumns(String column){
+        String[] cols = column.split("_");
+        StringBuffer sb = new StringBuffer();
+        for(int i=0; i< cols.length; i++){
+            String col = cols[i].toLowerCase();
+            if(i != 0){
+                String start = col.substring(0, 1).toUpperCase();
+                String end = col.substring(1).toLowerCase();
+                col = start + end;
+            }
+            sb.append(col);
+        }
+        return sb.toString();
     }
 }

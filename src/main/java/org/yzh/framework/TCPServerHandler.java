@@ -13,6 +13,8 @@ import org.yzh.framework.mapping.HandlerMapper;
 import org.yzh.framework.message.AbstractMessage;
 import org.yzh.framework.session.Session;
 import org.yzh.framework.session.SessionManager;
+import org.yzh.web.database.influx.CodeInfo;
+import org.yzh.web.endpoint.JT808Endpoint;
 
 import java.lang.reflect.Type;
 
@@ -91,6 +93,8 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
             IdleStateEvent event = (IdleStateEvent) evt;
             if (event.state() == IdleState.READER_IDLE) {
                 Session session = this.sessionManager.removeBySessionId(Session.buildId(ctx.channel()));
+                CodeInfo codeInfo = new CodeInfo(CodeInfo.下线,session.getTerminalId());
+                JT808Endpoint.influxDbUtils.insert(codeInfo);
                 logger.logEvent("服务器主动断开连接", session);
                 ctx.close();
             }

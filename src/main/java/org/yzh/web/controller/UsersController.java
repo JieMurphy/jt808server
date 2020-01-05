@@ -111,12 +111,13 @@ public class UsersController {
 
     @PostMapping(value = "/controller/assign", consumes = "application/x-www-form-urlencoded")
     public String assign(HttpServletRequest request) {
-        System.out.println("分为");
+        System.out.println("1");
         Object number = request.getSession().getAttribute(SessionKey.USER_ID);
         if(userService.findByNumber(number.toString()).getPower() != User.管理员)
         {
             return "fail";
         }
+        System.out.println("2");
         long id = Long.parseLong(request.getParameter("id"));
         String terNumber = request.getParameter("terminalId");
         User driver = userService.findByTerNumber(terNumber);
@@ -124,14 +125,17 @@ public class UsersController {
         {
             return "fail";
         }
+        System.out.println("3");
         if(orderService.isWorking(driver.getNumber())/* || TCPServerHandler.sessionManager.getByMobileNumber(terNumber) == null*/)
         {
             return "fail";
         }
+        System.out.println("4");
         if(orderService.alterStatus(id,Orders.待确认,driver.getNumber()) == false)
         {
             return "fail";
         }
+        System.out.println("5");
         return "success";
     }
 

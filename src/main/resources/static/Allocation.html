@@ -75,7 +75,7 @@
                     <td style="font-size: 30px">南京</td>
                     <td style="font-size: 30px">扬州</td>
                     <td style="font-size: 30px">毛巾</td>
-                    <td style="font-size: 30px" ><button onclick="data2()" style="margin-left: 50px">确认 </button></td>
+                    <td style="font-size: 30px" ><button onclick="getDate2(this)" style="margin-left: 50px">确认 </button></td>
                 </tr>
             </table>
             <br><br><br>
@@ -108,7 +108,7 @@
     var e="";
     function getDate2(th){
         c=$(th).parents("tr").find("#id").text();
-        var temp = '';
+        console.log(c);
         $.ajax({
             type: "post",
             url: "http://" + window.location.host +"/controller/terminals",
@@ -116,7 +116,8 @@
             contentType:"application/x-www-form-urlencoded",
             dataType: "json",
             success: function(res) {
-                var list = res;
+                var list = [{terminalId:"0158966",number:"粤A56464"},{terminalId:"0158966",number:"粤A56464"}];
+                console.log(list.length);
                 for(var $i = 0; $i < list.length; $i++) {
                     var a=list[$i].terminalId;
                     temp +=
@@ -125,7 +126,7 @@
                         '<td height="66px" style="font-size: 30px">' + '<button style="width:100px;height:50px;margin-left: 30px" onclick="Send(this)" style="margin-left: 50px">' + "派送" + '</button>' + '</td>' +
                         '</tr >';
                 }
-                $("#js2 tr:not(:first)").html(""); /*  除了第一行tr的内容，其余内容清空，防止获取重复的数据  */
+                $("#js2 tr:not(:first)").html(""); //  除了第一行tr的内容，其余内容清空，防止获取重复的数据
                 $("#js2").append(temp);
             },
             error:function (error) {
@@ -144,10 +145,10 @@
             data:{id:c,terminalId:e},
             xhrFields: {withCredentials:true},
             contentType:"application/x-www-form-urlencoded",
-            dataType: "json",
+            //dataType: "json",
             success:function(data){
                 alert(data);
-               // window.location.href="http://" + window.location.host +"/confirm";
+                window.location.href="http://" + window.location.host +"/recv.html";
             },
             error:function (error) {
                 alert(error);

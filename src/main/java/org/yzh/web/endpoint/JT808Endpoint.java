@@ -12,6 +12,8 @@ import org.yzh.framework.message.SyncFuture;
 import org.yzh.framework.session.MessageManager;
 import org.yzh.framework.session.Session;
 import org.yzh.framework.session.SessionManager;
+import org.yzh.web.database.influx.CodeInfo;
+import org.yzh.web.database.influx.InfluxDbUtils;
 import org.yzh.web.jt808.dto.*;
 import org.yzh.web.jt808.dto.basics.Message;
 
@@ -27,9 +29,13 @@ public class JT808Endpoint {
 
     private static final Logger logger = LoggerFactory.getLogger(JT808Endpoint.class.getSimpleName());
 
+    public static InfluxDbUtils influxDbUtils = new InfluxDbUtils();
+
     private SessionManager sessionManager = SessionManager.getInstance();
 
     private MessageManager messageManager = MessageManager.INSTANCE;
+
+
 
     //TODO Test
     public Object send(String mobileNumber, String hexMessage) {
@@ -148,7 +154,10 @@ public class JT808Endpoint {
     @Mapping(types = 终端注册, desc = "终端注册")
     public Message<RegisterResult> register(Message<Register> message, Session session) {
         System.out.println("register.."+message.getBody());
+
         Register body = message.getBody();
+        CodeInfo codeInfo = new CodeInfo(CodeInfo.上线,message.getMobileNumber());
+        influxDbUtils.insert(codeInfo);
         //TODO
         sessionManager.put(Session.buildId(session.getChannel()), session);
 
@@ -158,6 +167,8 @@ public class JT808Endpoint {
 
     @Mapping(types = 终端注销, desc = "终端注销")
     public Message 终端注销(Message message, Session session) {
+        CodeInfo codeInfo = new CodeInfo(CodeInfo.下线,message.getMobileNumber());
+        influxDbUtils.insert(codeInfo);
         //TODO
 
         CommonResult result = new CommonResult(终端注销, message.getSerialNumber(), CommonResult.Success);
@@ -186,6 +197,12 @@ public class JT808Endpoint {
     public Message 位置信息汇报(Message<PositionReport> message, Session session) {
         System.out.println("position.."+message.getBody());
         PositionReport body = message.getBody();
+        CodeInfo codeInfo = new CodeInfo(CodeInfo.在线,message.getMobileNumber());
+        codeInfo.setStatus(body.getStatus());
+        codeInfo.setLongitude(body.getLongitude());
+        codeInfo.setLatitude(body.getLatitude());
+        codeInfo.setAltitude(body.getAltitude());
+        influxDbUtils.insert(codeInfo);
         //TODO
         CommonResult result = new CommonResult(位置信息汇报, message.getSerialNumber(), CommonResult.Success);
         return new Message(平台通用应答, session.currentFlowId(), message.getMobileNumber(), result);

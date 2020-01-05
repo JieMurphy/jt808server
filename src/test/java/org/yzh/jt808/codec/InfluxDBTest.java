@@ -1,42 +1,53 @@
 package org.yzh.jt808.codec;
 
+import org.influxdb.dto.QueryResult;
+import org.junit.Before;
+import org.junit.Test;
+import org.yzh.web.database.influx.CodeInfo;
+import org.yzh.web.database.influx.InfluxDbUtils;
+
+import java.sql.Timestamp;
+import java.util.List;
+
 public class InfluxDBTest {
-    /*private InfluxDbUtils influxDbUtils;
-    private String username = "admin";//用户名
-    private String password = "admin";//密码
-    private String openurl = "http://127.0.0.1:8086";//连接地址
-    private String database = "test_db";//数据库
-    private String measurement = "sys_code";
+    private InfluxDbUtils influxDbUtils;
 
     @Before
     public void setUp()
     {
-        influxDbUtils = new InfluxDbUtils(username,password,openurl,database,"");
+        influxDbUtils = new InfluxDbUtils();
     }
 
     @Test
     public void testInsert()
     {
-        Map<String,String> tags = new HashMap<String, String>();
-        Map<String,Object> fields = new HashMap<String, Object>();
-
         CodeInfo codeInfo = new CodeInfo();
-        codeInfo.setAltitude(445);
-        codeInfo.setLatitude(777);
-        codeInfo.setLongitude(888);
+        codeInfo.setAltitude(54);
+        codeInfo.setLatitude(707);
+        codeInfo.setLongitude(488);
         codeInfo.setStatus(1);
-        codeInfo.setTagCode("0");
-        codeInfo.setTagName("goo");
+        codeInfo.setTagCode(CodeInfo.上线);
+        codeInfo.setTagName("078569");
 
-        tags.put("TAG_CODE",codeInfo.getTagCode());
-        tags.put("TAG_NAME",codeInfo.getTagName());
-
-        fields.put("Altitude",codeInfo.getAltitude());
-        fields.put("Longitude",codeInfo.getLongitude());
-        fields.put("Latitude",codeInfo.getLatitude());
-        fields.put("Status",codeInfo.getStatus());
-
-        influxDbUtils.insert(measurement,tags,fields);
+        influxDbUtils.insert(codeInfo);
     }
-    */
+
+    @Test
+    public void testShow()
+    {
+        QueryResult queryResult = influxDbUtils.queryAll();
+        List<CodeInfo> codeInfos = influxDbUtils.turn(queryResult);
+        for(CodeInfo info:codeInfos)
+        {
+            System.out.println(info.getTime());
+            System.out.println(info.getTagName());
+        }
+    }
+
+    @Test
+    public void testSelect()
+    {
+        QueryResult queryResult = influxDbUtils.queryByTernumberAndTime("goo",new Timestamp(1578223091));
+        System.out.println(queryResult.toString());
+    }
 }
