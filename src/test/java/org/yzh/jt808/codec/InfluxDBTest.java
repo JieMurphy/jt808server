@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.yzh.web.database.influx.CodeInfo;
 import org.yzh.web.database.influx.InfluxDbUtils;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 public class InfluxDBTest {
@@ -23,11 +22,12 @@ public class InfluxDBTest {
     {
         CodeInfo codeInfo = new CodeInfo();
         codeInfo.setAltitude(54);
-        codeInfo.setLatitude(707);
-        codeInfo.setLongitude(488);
-        codeInfo.setStatus(1);
-        codeInfo.setTagCode(CodeInfo.上线);
-        codeInfo.setTagName("078569");
+        codeInfo.setLatitude(31929138);
+        codeInfo.setLongitude(118887769);
+        codeInfo.setStatus(55524);
+        codeInfo.setTagCode(CodeInfo.在线);
+        codeInfo.setTagName("015850612081");
+        codeInfo.setAlltime(31565l);
 
         influxDbUtils.insert(codeInfo);
     }
@@ -47,7 +47,7 @@ public class InfluxDBTest {
     @Test
     public void testSelect()
     {
-        QueryResult queryResult = influxDbUtils.queryByTernumberAndTime("goo",new Timestamp(1578223091));
-        System.out.println(queryResult.toString());
+        long l = influxDbUtils.getAllTime("078569");
+        System.out.println(l);
     }
 }

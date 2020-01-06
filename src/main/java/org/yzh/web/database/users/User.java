@@ -9,6 +9,10 @@ public class User {
     public static int 消费者 = 1;
     public static int 司机 = 2;
 
+    public static int 上线 = 3;
+    public static int 在线 = 4;
+    public static int 下线 = 5;
+
     @Id
     @GeneratedValue
     private long id;

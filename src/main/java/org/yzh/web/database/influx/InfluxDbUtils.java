@@ -55,6 +55,7 @@ public class InfluxDbUtils {
         fields.put("Longitude",codeInfo.getLongitude());
         fields.put("Latitude",codeInfo.getLatitude());
         fields.put("Status",codeInfo.getStatus());
+        fields.put("AllTime",codeInfo.getAlltime());
 
         Builder builder = Point.measurement(measurement);
         builder.tag(tags);
@@ -63,9 +64,36 @@ public class InfluxDbUtils {
         influxDB.write(database,"",builder.build());
     }
 
+    public Long getAllTime(String terNumber)
+    {
+        QueryResult queryResult = queryByTernumberAndStatsLimitOne(terNumber,CodeInfo.下线);
+        if(queryResult == null)
+        {
+            return 0l;
+        }
+        List<CodeInfo> codeInfos = turn(queryResult);
+        if(codeInfos.isEmpty())
+        {
+            return 0l;
+        }
+        return codeInfos.get(codeInfos.size() - 1).getAlltime();
+    }
+
     public QueryResult queryAll()
     {
         String command = "select * from " + measurement;
+        return query(command);
+    }
+
+    public QueryResult queryByTernumberAndStats(String ternumber,String stat)
+    {
+        String command = "select * from " + measurement + " where TAG_CODE = '" + stat + "' and TAG_NAME = '" + ternumber + "'";
+        return query(command);
+    }
+
+    public QueryResult queryByTernumberAndStatsLimitOne(String ternumber,String stat)
+    {
+        String command = "select * from " + measurement + " where TAG_CODE = '" + stat + "' and TAG_NAME = '" + ternumber + "' order by time desc limit 1";
         return query(command);
     }
 
@@ -92,12 +120,16 @@ public class InfluxDbUtils {
         for (QueryResult.Result result : queryResult.getResults()) {
 
             List<QueryResult.Series> series= result.getSeries();
+            if(series == null)
+            {
+                return lists;
+            }
             for (QueryResult.Series serie : series) {
 //				Map<String, String> tags = serie.getTags();
-                List<List<Object>>  values = serie.getValues();
-                List<String> columns = serie.getColumns();
 
-                lists.addAll(getQueryData(columns, values));
+                    List<List<Object>>  values = serie.getValues();
+                    List<String> columns = serie.getColumns();
+                    lists.addAll(getQueryData(columns, values));
             }
         }
 

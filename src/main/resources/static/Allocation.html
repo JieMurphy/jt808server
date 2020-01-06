@@ -109,6 +109,7 @@
     function getDate2(th){
         c=$(th).parents("tr").find("#id").text();
         console.log(c);
+        var temp = "";
         $.ajax({
             type: "post",
             url: "http://" + window.location.host +"/controller/terminals",
@@ -116,7 +117,8 @@
             contentType:"application/x-www-form-urlencoded",
             dataType: "json",
             success: function(res) {
-                var list = [{terminalId:"0158966",number:"粤A56464"},{terminalId:"0158966",number:"粤A56464"}];
+                //var list = [{terminalId:"0158966",number:"粤A56464"},{terminalId:"0158966",number:"粤A56464"}];
+                var list = res;
                 console.log(list.length);
                 for(var $i = 0; $i < list.length; $i++) {
                     var a=list[$i].terminalId;
@@ -148,7 +150,10 @@
             //dataType: "json",
             success:function(data){
                 alert(data);
-                window.location.href="http://" + window.location.host +"/recv.html";
+                if(data == "success")
+                {
+                    window.location.href="http://" + window.location.host +"/recv.html";
+                }
             },
             error:function (error) {
                 alert(error);

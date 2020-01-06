@@ -74,6 +74,11 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
     public void channelInactive(ChannelHandlerContext ctx) {
         String sessionId = Session.buildId(ctx.channel());
         Session session = sessionManager.removeBySessionId(sessionId);
+
+        CodeInfo codeInfo = new CodeInfo(CodeInfo.下线,session.getTerminalId());
+        codeInfo.setAlltime(JT808Endpoint.influxDbUtils.getAllTime(session.getTerminalId()) + System.currentTimeMillis() - session.getSignCommunicateTimeStamp());
+        JT808Endpoint.influxDbUtils.insert(codeInfo);
+
         logger.logEvent("断开连接", session);
         ctx.channel().close();
         // ctx.close();
@@ -92,9 +97,14 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
         if (IdleStateEvent.class.isAssignableFrom(evt.getClass())) {
             IdleStateEvent event = (IdleStateEvent) evt;
             if (event.state() == IdleState.READER_IDLE) {
-                Session session = this.sessionManager.removeBySessionId(Session.buildId(ctx.channel()));
-                CodeInfo codeInfo = new CodeInfo(CodeInfo.下线,session.getTerminalId());
+                String sessionId = Session.buildId(ctx.channel());
+                Session session1 = this.sessionManager.getBySessionId(sessionId);
+
+                CodeInfo codeInfo = new CodeInfo(CodeInfo.下线,session1.getTerminalId());
+                codeInfo.setAlltime(JT808Endpoint.influxDbUtils.getAllTime(session1.getTerminalId()) + System.currentTimeMillis() - session1.getSignCommunicateTimeStamp());
                 JT808Endpoint.influxDbUtils.insert(codeInfo);
+
+                Session session = this.sessionManager.removeBySessionId(Session.buildId(ctx.channel()));
                 logger.logEvent("服务器主动断开连接", session);
                 ctx.close();
             }

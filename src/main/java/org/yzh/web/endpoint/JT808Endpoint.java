@@ -156,6 +156,8 @@ public class JT808Endpoint {
         System.out.println("register.."+message.getBody());
 
         Register body = message.getBody();
+
+        session.setLicensePlate(body.getLicensePlate());
         CodeInfo codeInfo = new CodeInfo(CodeInfo.上线,message.getMobileNumber());
         influxDbUtils.insert(codeInfo);
         //TODO
@@ -168,6 +170,7 @@ public class JT808Endpoint {
     @Mapping(types = 终端注销, desc = "终端注销")
     public Message 终端注销(Message message, Session session) {
         CodeInfo codeInfo = new CodeInfo(CodeInfo.下线,message.getMobileNumber());
+        codeInfo.setAlltime(influxDbUtils.getAllTime(session.getTerminalId()) + System.currentTimeMillis() - session.getSignCommunicateTimeStamp());
         influxDbUtils.insert(codeInfo);
         //TODO
 

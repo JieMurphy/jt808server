@@ -8,6 +8,8 @@ public class Session {
 
     private String id;
     private String terminalId;
+    private String licensePlate;
+    private String driNumber;
     private Channel channel = null;
     private boolean isAuthenticated = false;
     // 消息流水号 word(16) 按发送顺序从 0 开始循环累加
@@ -17,7 +19,10 @@ public class Session {
     // 2. terminal --> server 数据包
     private long lastCommunicateTimeStamp = 0l;
 
+    private long signCommunicateTimeStamp = 0l;
+
     public Session() {
+        this.signCommunicateTimeStamp = System.currentTimeMillis();
     }
 
     public static String buildId(Channel channel) {
@@ -75,6 +80,30 @@ public class Session {
 
     public void setLastCommunicateTimeStamp(long lastCommunicateTimeStamp) {
         this.lastCommunicateTimeStamp = lastCommunicateTimeStamp;
+    }
+
+    public void setSignCommunicateTimeStamp(long signCommunicateTimeStamp) {
+        this.signCommunicateTimeStamp = signCommunicateTimeStamp;
+    }
+
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
+    }
+
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    public void setDriNumber(String driNumber) {
+        this.driNumber = driNumber;
+    }
+
+    public String getDriNumber() {
+        return driNumber;
+    }
+
+    public long getSignCommunicateTimeStamp() {
+        return signCommunicateTimeStamp;
     }
 
     public SocketAddress getRemoteAddr() {

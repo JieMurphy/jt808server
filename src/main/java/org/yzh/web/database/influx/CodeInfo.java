@@ -13,6 +13,7 @@ public class CodeInfo implements Serializable {
     private Integer latitude;//纬度
     private Integer longitude;//经度
     private Integer altitude;//海拔
+    private Long alltime;//在线时长
 
     private String time;
     private String tagCode;//状态码
@@ -20,7 +21,7 @@ public class CodeInfo implements Serializable {
 
     public CodeInfo()
     {
-
+        this.alltime = 1l;
     }
 
     public CodeInfo(String code,String name)
@@ -32,6 +33,7 @@ public class CodeInfo implements Serializable {
         this.longitude = 0;
         this.altitude = 0;
         this.status = 0;
+        this.alltime = 1l;
     }
 
     public Integer getAltitude() {
@@ -88,5 +90,13 @@ public class CodeInfo implements Serializable {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public void setAlltime(Long alltime) {
+        this.alltime = alltime;
+    }
+
+    public Long getAlltime() {
+        return alltime;
     }
 }
