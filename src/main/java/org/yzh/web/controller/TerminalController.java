@@ -23,9 +23,20 @@ public class TerminalController {
     private JT808Endpoint endpoint;
 
     @ApiOperation(value = "设置终端参数")
+    @CrossOrigin(allowCredentials = "true",allowedHeaders = "*")
+    @RequestMapping(value = "{terminalId}/parameter", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateParameter(@PathVariable("terminalId") String terminalId, @RequestBody List<TerminalParameter> parameters) {
+        System.out.println(parameters.get(0).toString() + "?");
+        return "success";
+    }
+
+    @ApiOperation(value = "设置终端参数")
+    @CrossOrigin(allowCredentials = "true",allowedHeaders = "*")
     @RequestMapping(value = "{terminalId}/parameters", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult updateParameters(@PathVariable("terminalId") String terminalId, @RequestBody List<TerminalParameter> parameters) {
+        System.out.println(parameters.get(0).toString());
         ParameterSetting body = new ParameterSetting();
         body.setParameters(parameters);
         Message message = new Message(MessageId.设置终端参数, terminalId, body);

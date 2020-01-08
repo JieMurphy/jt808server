@@ -19,4 +19,11 @@ public class Logger {
         logger.info(log);
         return log;
     }
+
+    public String logUsers(String event, String messages)
+    {
+        String log = event + " " + messages;
+        logger.info(log);
+        return log;
+    }
 }

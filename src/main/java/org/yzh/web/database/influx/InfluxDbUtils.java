@@ -64,9 +64,32 @@ public class InfluxDbUtils {
         influxDB.write(database,"",builder.build());
     }
 
+
+
     public Long getAllTime(String terNumber)
     {
-        QueryResult queryResult = queryByTernumberAndStatsLimitOne(terNumber,CodeInfo.下线);
+        QueryResult queryResult = queryByTernumberAndStatsLimitOne(terNumber,CodeInfo.在线);
+        if(queryResult == null)
+        {
+            return null;
+        }
+        List<CodeInfo> codeInfos = turn(queryResult);
+        if(codeInfos.isEmpty())
+        {
+            return null;
+        }
+        CodeInfo codeInfo = codeInfos.get(codeInfos.size() - 1);
+        if(codeInfo == null)
+        {
+            return 0l;
+        }
+        return codeInfo.getAlltime();
+    }
+
+    public Long getAllTimeIn20(String terNumber)
+    {
+        String time = turnTimestampToTime(System.currentTimeMillis() - 20 * 60 * 1000);
+        QueryResult queryResult = queryByTernumberAndStatsLimitOneIntime(terNumber,CodeInfo.在线,time);
         if(queryResult == null)
         {
             return 0l;
@@ -76,7 +99,13 @@ public class InfluxDbUtils {
         {
             return 0l;
         }
-        return codeInfos.get(codeInfos.size() - 1).getAlltime();
+        CodeInfo codeInfo = codeInfos.get(codeInfos.size() - 1);
+        if(codeInfo == null)
+        {
+            return 0l;
+        }
+
+        return codeInfo.getAlltime();
     }
 
     public QueryResult queryAll()
@@ -97,6 +126,12 @@ public class InfluxDbUtils {
         return query(command);
     }
 
+    public QueryResult queryByTernumberAndStatsLimitOneIntime(String ternumber,String stat,String time)
+    {
+        String command = "select * from " + measurement + " where TAG_CODE = '" + stat + "' and time >= '" + time + "' and TAG_NAME = '" + ternumber + "' order by time desc limit 1";
+        return query(command);
+    }
+
     public QueryResult queryByTernumberAndTime(String ternumber,String time)
     {
         String command = "select * from " + measurement + " where time >= '" + time + "' and TAG_NAME = '" + ternumber + "'";
@@ -105,9 +140,7 @@ public class InfluxDbUtils {
 
     public QueryResult queryByTernumberAndTime(String ternumber, Timestamp timestamp)
     {
-        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        long time = timestamp.getTime() - 8 * 60 * 60 * 1000;
-        String newTime = sd.format(time);
+        String newTime = turnTimestampToTime(timestamp.getTime());
         return queryByTernumberAndTime(ternumber,newTime);
     }
 
@@ -134,6 +167,13 @@ public class InfluxDbUtils {
         }
 
         return lists;
+    }
+
+    private String turnTimestampToTime(Long timestamp)
+    {
+        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long time = timestamp - 8 * 60 * 60 * 1000;
+        return sd.format(time);
     }
 
     private List<CodeInfo> getQueryData(List<String> columns, List<List<Object>>  values){

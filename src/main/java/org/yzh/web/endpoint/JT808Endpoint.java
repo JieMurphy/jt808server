@@ -51,7 +51,7 @@ public class JT808Endpoint {
         String key = mobileNumber;
         SyncFuture receive = messageManager.receive(key);
         try {
-            return receive.get(5, TimeUnit.SECONDS);
+            return receive.get(10, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             messageManager.remove(key);
             e.printStackTrace();
@@ -73,7 +73,7 @@ public class JT808Endpoint {
         String key = mobileNumber + (hasReplyFlowIdId ? message.getSerialNumber() : "");
         SyncFuture receive = messageManager.receive(key);
         try {
-            return receive.get(5, TimeUnit.SECONDS);
+            return receive.get(10, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             messageManager.remove(key);
             e.printStackTrace();
@@ -85,6 +85,7 @@ public class JT808Endpoint {
     @Mapping(types = 终端通用应答, desc = "终端通用应答")
     public void 终端通用应答(Message<CommonResult> message) {
         CommonResult body = message.getBody();
+        logger.info("终端通用应答..." + body);
         String mobileNumber = message.getMobileNumber();
         Integer replyId = body.getReplyId();
         messageManager.put(mobileNumber + replyId, message);
@@ -93,6 +94,7 @@ public class JT808Endpoint {
     @Mapping(types = 查询终端参数应答, desc = "查询终端参数应答")
     public void 查询终端参数应答(Message<ParameterSettingReply> message) {
         ParameterSettingReply body = message.getBody();
+        logger.info("查询终端参数应答..." + body);
         String mobileNumber = message.getMobileNumber();
         Integer replyId = message.getSerialNumber();
         messageManager.put(mobileNumber + replyId, message);
@@ -153,11 +155,11 @@ public class JT808Endpoint {
 
     @Mapping(types = 终端注册, desc = "终端注册")
     public Message<RegisterResult> register(Message<Register> message, Session session) {
-        System.out.println("register.."+message.getBody());
-
+        logger.info("register.."+message.getBody());
         Register body = message.getBody();
 
         session.setLicensePlate(body.getLicensePlate());
+        session.setAllTimeStamp(influxDbUtils.getAllTimeIn20(message.getMobileNumber()));
         CodeInfo codeInfo = new CodeInfo(CodeInfo.上线,message.getMobileNumber());
         influxDbUtils.insert(codeInfo);
         //TODO
@@ -170,7 +172,6 @@ public class JT808Endpoint {
     @Mapping(types = 终端注销, desc = "终端注销")
     public Message 终端注销(Message message, Session session) {
         CodeInfo codeInfo = new CodeInfo(CodeInfo.下线,message.getMobileNumber());
-        codeInfo.setAlltime(influxDbUtils.getAllTime(session.getTerminalId()) + System.currentTimeMillis() - session.getSignCommunicateTimeStamp());
         influxDbUtils.insert(codeInfo);
         //TODO
 
@@ -198,13 +199,14 @@ public class JT808Endpoint {
 
     @Mapping(types = 位置信息汇报, desc = "位置信息汇报")
     public Message 位置信息汇报(Message<PositionReport> message, Session session) {
-        System.out.println("position.."+message.getBody());
+        logger.info("position.."+message.getBody());
         PositionReport body = message.getBody();
         CodeInfo codeInfo = new CodeInfo(CodeInfo.在线,message.getMobileNumber());
         codeInfo.setStatus(body.getStatus());
         codeInfo.setLongitude(body.getLongitude());
         codeInfo.setLatitude(body.getLatitude());
         codeInfo.setAltitude(body.getAltitude());
+        codeInfo.setAlltime(session.getAllTimeStamp() + System.currentTimeMillis() - session.getSignCommunicateTimeStamp());
         influxDbUtils.insert(codeInfo);
         //TODO
         CommonResult result = new CommonResult(位置信息汇报, message.getSerialNumber(), CommonResult.Success);

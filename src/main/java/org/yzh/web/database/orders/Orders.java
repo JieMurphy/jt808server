@@ -90,4 +90,12 @@ public class Orders {
     public Timestamp getStartTime() {
         return startTime;
     }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public int getCount() {
+        return count;
+    }
 }

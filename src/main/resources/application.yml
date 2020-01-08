@@ -37,11 +37,11 @@ spring:
 
 
 
-
 server:
   port: 8000
   context-path: /
   tomcat:
     uri-encoding: UTF-8
 
-
+logging:
+  file: myLog.log

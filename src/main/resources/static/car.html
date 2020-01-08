@@ -5,9 +5,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=QXwuA2Zi8h3huVQvqVrW2MhU"></script>
+    <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
     <style type="text/css">
-        .main{min-height: 850px;min-width: 1700px;background-image: url("852.jpg");
-        }
+        .main1{min-height: 840px;width: 600px;}
         .menu_title SPAN {
             FONT-WEIGHT: bold; LEFT: 7px; COLOR: #215dc6; POSITION: relative; TOP: 2px
         }
@@ -17,37 +20,107 @@
         #js1{
             font-family: 楷体;
         }
+        .main2{
+            position: absolute;/*绝对定位*/
+            top: 50px; left: 650px;
+            width: 1000px;
+            height:750px;
+            border: 1px solid rgba(255, 0, 0, 0.04);
+        }
     </style>
 </head>
-<body>
-    <div id="main" class="main">
+<body background="852.jpg">
+    <div  class="main1">
+        <a style="font-family: 楷体;font-size: 30px">点击终端号码，查看车辆位置信息：</a>
         <br><br>
-        <table id="js1" class="table" border="1px" bordercolor="rgba(188,188,188,0.7)" style="height: 60px;font-size: 35px;font-family: 楷体;border-color: rgba(188,188,188,0.7)">
-                <th style="border-color: rgba(188,188,188,0.7)">在线终端</th>
-                <td bordercolor="black" ><a style="font-size: 30px" href="" onclick="location()">苏A12378</a></td>
+        <table id="js1" border="1px" bordercolor="rgba(188,188,188,0.7)" style="height: 60px;font-size: 35px;font-family: 楷体;border-color: rgba(188,188,188,0.7)">
+            <tr>
+                <th height="66px" width="200px" style="font-size: 30px">终端号码</th>
+                <th height="66px" width="200px" style="font-size: 30px">许可证号码</th>
+                <th height="66px" width="200px" style="font-size: 30px">司机号码</th>
+            </tr>
         </table>
     </div>
-</div>
-<script>
+    <div  class="main2" id="container">
+    </div>
+<script type="text/javascript">
+    var c="";
     function getDate1() {
         var temp = '';
         $.ajax({
             type: "post",
-            url: "http://" + window.location.host +"/controller/allocation",
+            url: "http://" + window.location.host +"/controller/terminals",
             xhrFields: {withCredentials:true},
             contentType:"application/x-www-form-urlencoded",
             dataType: "json",
             success: function(res) {
+                //var list = [{terminalId:"015850612081",licensePlate:"056",driNumber:"Jack"},{terminalId:"015850612083",licensePlate:"086",driNumber:"Marry"}];
                 var list = res;
                 for(var $i = 0; $i < list.length; $i++) {
                     temp +=
-                        '</td>'+ '<a bordercolor="black">' + +'<a style="font-size: 30px">'+ list[$i].terminalId +'</a>'+ '</td>';
+                        '<tr>'+
+                        '<td id="id" height="66px" style="font-size: 30px">' +'<button style="font-size: 30px" onclick="Send(this)">'+ list[$i].terminalId +'</button>'+ '</td>'+
+                        '<td height="66px" style="font-size: 30px">'+ list[$i].licensePlate + '</td>'+
+                        '<td height="66px" style="font-size: 30px">' + list[$i].driNumber + '</td>'+
+                        '</tr>';
                 }
                 $("#js1 tr:not(:first)").html(""); /*  除了第一行tr的内容，其余内容清空，防止获取重复的数据  */
                 $("#js1").append(temp);
             },
             error:function (error) {
                 console.log(error);
+                alert(error);
+            }
+        });
+    }
+    getDate1();
+    var map = new BMap.Map("container");
+    map.centerAndZoom(new BMap.Point(118.9063330400, 31.9113227200), 16);//初始化地图
+    map.addControl(new BMap.NavigationControl());               // 添加平移缩放控件
+    map.addControl(new BMap.ScaleControl());                    // 添加比例尺控件
+    map.addControl(new BMap.MapTypeControl());                      //添加卫星
+    map.addControl(new BMap.OverviewMapControl());              //添加缩略地图控件
+    map.clearOverlays();                        //清除地图上所有的覆盖物
+    map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+    var driving = new BMap.DrivingRoute(map);    //创建驾车实例
+    // var pointArr1 = [{longitude: 118.892319, latitude: 31.910569}];
+
+
+    function Send(th) {
+        c=$(th).parents("tr").find("#id").text();
+        console.log(c);
+        $.ajax({
+            url:"http://" + window.location.host +"/controller/position",
+            type:'post',
+            xhrFields: {withCredentials:true},
+            contentType:"application/x-www-form-urlencoded",
+            data:{terminalId:c},
+            success:function(res){
+                //var pointArr = [{longitude: 118.892319, latitude: 31.910569}];
+                var pointArr=res;
+                var xx = pointArr[0].longitude / 1000000;
+                var yy = pointArr[0].latitude / 1000000;
+                var gpsPoint = new BMap.Point(xx,yy);
+                console.log(gpsPoint);
+                var markergps = new BMap.Marker(gpsPoint);
+                map.addOverlay(markergps);
+                var labelgps = new BMap.Label("原始GPS坐标",{offset:new BMap.Size(20,-10)});
+                markergps.setLabel(labelgps);
+                translateCallback = function (point){
+                    console.log(gpsPoint);
+                    var marker = new BMap.Marker(point);
+                    map.addOverlay(marker);
+                    var label = new BMap.Label("百度转换后的坐标位置",{offset:new BMap.Size(20,-10)});
+                    marker.setLabel(label); //添加百度label
+                    map.setCenter(point);
+                    pointArr=point;
+                }
+                setTimeout(function(){
+                    BMap.Convertor.translate(gpsPoint,0,translateCallback);     //真实经纬度转成百度坐标
+                }, 2000);
+
+            },
+            error:function (error) {
                 alert(error);
             }
         });

@@ -76,7 +76,6 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
         Session session = sessionManager.removeBySessionId(sessionId);
 
         CodeInfo codeInfo = new CodeInfo(CodeInfo.下线,session.getTerminalId());
-        codeInfo.setAlltime(JT808Endpoint.influxDbUtils.getAllTime(session.getTerminalId()) + System.currentTimeMillis() - session.getSignCommunicateTimeStamp());
         JT808Endpoint.influxDbUtils.insert(codeInfo);
 
         logger.logEvent("断开连接", session);
@@ -101,7 +100,6 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
                 Session session1 = this.sessionManager.getBySessionId(sessionId);
 
                 CodeInfo codeInfo = new CodeInfo(CodeInfo.下线,session1.getTerminalId());
-                codeInfo.setAlltime(JT808Endpoint.influxDbUtils.getAllTime(session1.getTerminalId()) + System.currentTimeMillis() - session1.getSignCommunicateTimeStamp());
                 JT808Endpoint.influxDbUtils.insert(codeInfo);
 
                 Session session = this.sessionManager.removeBySessionId(Session.buildId(ctx.channel()));

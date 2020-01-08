@@ -18,7 +18,7 @@ public class Session {
     // 1. terminal --> server 心跳包
     // 2. terminal --> server 数据包
     private long lastCommunicateTimeStamp = 0l;
-
+    private long allTimeStamp = 0l;
     private long signCommunicateTimeStamp = 0l;
 
     public Session() {
@@ -100,6 +100,14 @@ public class Session {
 
     public String getDriNumber() {
         return driNumber;
+    }
+
+    public long getAllTimeStamp() {
+        return allTimeStamp;
+    }
+
+    public void setAllTimeStamp(long allTimeStamp) {
+        this.allTimeStamp = allTimeStamp;
     }
 
     public long getSignCommunicateTimeStamp() {

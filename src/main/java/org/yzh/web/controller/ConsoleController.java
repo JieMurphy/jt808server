@@ -19,14 +19,12 @@ public class ConsoleController {
     @GetMapping(value = "/")
     public String console(HttpSession session) {
         session.setAttribute(SessionKey.USER_ID, session.getId().hashCode());
-        System.out.println(session.getId().hashCode());
         return "forward:/index.html";
     }
 
     @GetMapping(value = "/login")
     public String login(HttpSession session) {
         session.setAttribute(SessionKey.USER_ID, session.getId().hashCode());
-        System.out.println(session.getId().hashCode());
         return "forward:/Login.html";
     }
 
@@ -56,10 +54,10 @@ public class ConsoleController {
         return "forward:/recv.html";
     }
 
-    @GetMapping(value = "/signed")
+    @GetMapping(value = "/sign")
     public String sign()
     {
-        return "forward:/transport.html";
+        return "forward:/registe.html";
     }
 
     @GetMapping(value = "/histories")

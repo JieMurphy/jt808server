@@ -53,6 +53,8 @@
         <button onclick="jsonData('/driver/confirm')">确认</button>
         <br/>
         <button onclick="jsonData('/controller/transport')">待签收查询</button>
+        <br/>
+        <button onclick="Data()">修改终端心跳间隔</button>
         <div class="message">
             <table id="tb">
             </table>
@@ -128,6 +130,24 @@
             type:'post',
             data:{username:$("#usrname").val(),password:$("#passwd").val(),id:$("#usrname").val(),terNumber:$("#passwd").val()},
             contentType:"application/x-www-form-urlencoded",
+            success:function (data)
+            {
+                console.log(data);
+                alert(data);
+            },error:function (error) {
+                alert(error);
+            }
+        })
+    }
+
+    Data = function()
+    {
+        $.ajax({
+            url:"http://" + window.location.host + "/terminal/015850612084/parameters",
+            xhrFields:{withCredentials:true},
+            type:'post',
+            data:JSON.stringify([{id:0x0029,length:4,bytesValue:[0,0,0,5]}]),
+            contentType: "application/json; charset=utf-8",
             success:function (data)
             {
                 console.log(data);

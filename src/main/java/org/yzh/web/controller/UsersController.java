@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.yzh.framework.TCPServerHandler;
+import org.yzh.framework.log.Logger;
 import org.yzh.framework.session.Session;
 import org.yzh.web.config.SessionKey;
 import org.yzh.web.database.goods.GoodService;
@@ -34,12 +35,17 @@ public class UsersController {
     @Autowired
     private GoodService goodService;
 
+    @Autowired
+    private Logger logger;
+
     @ApiOperation(value = "管理员登录")
     @PostMapping(value = "/controller/login",consumes = "application/x-www-form-urlencoded")
     public String login(HttpServletRequest request)
     {
         String username = request.getParameter("username");
         String userpasswd = request.getParameter("password");
+
+        logger.logUsers("管理员登录",username + " " + userpasswd);
 
         if(username == null || userpasswd == null)
         {
@@ -59,28 +65,11 @@ public class UsersController {
     @PostMapping(value = "/controller/sign", consumes = "application/x-www-form-urlencoded")
     public String sign(HttpServletRequest request)
     {
-        Goods goods = new Goods("香蕉",Goods.水果,12);
-        Goods goods1 = new Goods("胡萝卜",Goods.蔬菜,13);
-        Goods goods2 = new Goods("玉米",Goods.谷物,11);
-        goodService.save(goods);
-        goodService.save(goods1);
-        goodService.save(goods2);
-
-        Orders orders = new Orders("15268059209","香蕉",5,"南京金陵科技学院");
-        Orders orders1 = new Orders("15268059209","香蕉",8,"钢铁人");
-        Orders orders2 = new Orders("15268059209","玉米",3,"南京金陵科技学院");
-        Orders orders3 = new Orders("15268059209","胡萝卜",2,"浙江衢州");
-        orderService.save(orders);
-        orderService.save(orders1);
-        orderService.alterStatus(2,Orders.待确认,"15906709889");
-        orderService.save(orders2);
-        orderService.alterStatus(3,Orders.待签收);
-        orderService.save(orders3);
-        orderService.alterStatus(4,Orders.已签收);
-
         User user = new User("15906709889","jack","123","015850612084");
         User user1 = new User(request.getParameter("username"),request.getParameter("password"));
         User user2 = new User("15268059209","Zack","321");
+
+        logger.logUsers("管理员登录",user1.getUsername() + " " + user1.getPassword());
 
         if(userService.save(user2) == false)
         {
@@ -97,6 +86,25 @@ public class UsersController {
             return "用户已存在！！！";
         }
 
+        Goods goods = new Goods("香蕉",Goods.水果,12);
+        Goods goods1 = new Goods("胡萝卜",Goods.蔬菜,13);
+        Goods goods2 = new Goods("玉米",Goods.谷物,11);
+        goodService.save(goods);
+        goodService.save(goods1);
+        goodService.save(goods2);
+
+        Orders orders = new Orders("15268059209","香蕉",5,"南京金陵科技学院");
+        Orders orders1 = new Orders("15268059209","香蕉",8,"钢铁人");
+        Orders orders2 = new Orders("15268059209","玉米",3,"南京金陵科技学院");
+        Orders orders3 = new Orders("15268059209","胡萝卜",2,"浙江衢州");
+       orderService.save(orders);
+        orderService.save(orders1);
+        orderService.alterStatus(2,Orders.待确认,"15906709889");
+        orderService.save(orders2);
+        orderService.alterStatus(3,Orders.待签收);
+        orderService.save(orders3);
+        orderService.alterStatus(4,Orders.已签收,"15906709889");
+
         return "注册成功！！！";
     }
 
@@ -104,7 +112,7 @@ public class UsersController {
     @PostMapping(value = "/controller/allocation", consumes = "application/x-www-form-urlencoded")
     public List<Orders> allocation()
     {
-        System.out.println("分配");
+        logger.logUsers("管理员分配查询","");
         return  orderService.findByStatus(Orders.待分配);
     }
 
@@ -112,7 +120,7 @@ public class UsersController {
     @PostMapping(value = "/controller/confirm", consumes = "application/x-www-form-urlencoded")
     public List<Orders> confirm()
     {
-        System.out.println("确认");
+        logger.logUsers("管理员确认查询","");
         return  orderService.findByStatus(Orders.待确认);
     }
 
@@ -120,7 +128,7 @@ public class UsersController {
     @PostMapping(value = "/controller/transport", consumes = "application/x-www-form-urlencoded")
     public List<Orders> transport()
     {
-        System.out.println("运送");
+        logger.logUsers("管理员运输查询","");
         return  orderService.findByStatus(Orders.待签收);
     }
 
@@ -128,7 +136,7 @@ public class UsersController {
     @PostMapping(value = "/controller/history", consumes = "application/x-www-form-urlencoded")
     public List<Orders> hository()
     {
-        System.out.println("完成");
+        logger.logUsers("管理员历史查询","");
         return  orderService.findByStatus(Orders.已签收);
     }
 
@@ -136,6 +144,7 @@ public class UsersController {
     @PostMapping(value = "/controller/terminals", consumes = "application/x-www-form-urlencoded")
     public List<Session> terminals()
     {
+        logger.logUsers("管理员终端信息查询","");
         List<Session> lists =  TCPServerHandler.sessionManager.toList();
         for(Session session : lists)
         {
@@ -151,6 +160,7 @@ public class UsersController {
     @ApiOperation(value = "管理员分配")
     @PostMapping(value = "/controller/assign", consumes = "application/x-www-form-urlencoded")
     public String assign(HttpServletRequest request) {
+        logger.logUsers("管理员分配","");
         Object number = request.getSession().getAttribute(SessionKey.USER_ID);
         if(userService.findByNumber(number.toString()).getPower() != User.管理员)
         {
@@ -183,15 +193,57 @@ public class UsersController {
             return null;
         }
         String terNumber = request.getParameter("terminalId");
+
+        logger.logUsers("管理员查询位置",terNumber);
+
         QueryResult result = JT808Endpoint.influxDbUtils.queryByTernumberAndStatsLimitOne(terNumber,CodeInfo.在线);
         return JT808Endpoint.influxDbUtils.turn(result);
     }
 
+    @ApiOperation(value = "消费者登录")
+    @PostMapping(value = "/customer/login", consumes = "application/x-www-form-urlencoded")
+    public String customer_login(HttpServletRequest request)
+    {
+        String name = request.getParameter("userid");
+        String passwd = request.getParameter("passwd");
+
+        logger.logUsers("消费者登录",name + " " + passwd);
+
+        User user = userService.findByNameAndPasswd(name,passwd);
+        if(user == null || user.getPower() != User.消费者)
+        {
+            return "fail";
+        }
+        request.getSession().setAttribute(SessionKey.USER_ID,userService.findByNameAndPasswd(name,passwd).getNumber());
+        return "success";
+    }
+
+    @ApiOperation(value = "消费者注册")
+    @PostMapping(value = "/customer/sign", consumes = "application/x-www-form-urlencoded")
+    public String customer_sign(HttpServletRequest request)
+    {
+        String name = request.getParameter("userid");
+        String passwd = request.getParameter("passwd");
+        String number = request.getParameter("tel");
+
+        logger.logUsers("消费者注册",name + " " + passwd + " " + number);
+
+        User user = new User(number,name,passwd);
+        if(userService.save(user) == false)
+        {
+            return "fail";
+        }
+        return "success";
+    }
+
     @ApiOperation(value = "消费者查询路线")
-    @PostMapping(value = "/cumstomer/route", consumes = "application/x-www-form-urlencoded")
-    public List<CodeInfo> cumstomer_route(HttpServletRequest request)
+    @PostMapping(value = "/customer/route", consumes = "application/x-www-form-urlencoded")
+    public List<CodeInfo> customer_route(HttpServletRequest request)
     {
         String id = request.getParameter("id");
+
+        logger.logUsers("消费者查询路线",id);
+
         Orders orders = orderService.findOne(Long.parseLong(id));
         if(orders == null)
         {
@@ -206,18 +258,255 @@ public class UsersController {
         return JT808Endpoint.influxDbUtils.turn(result);
     }
 
+    @ApiOperation(value = "消费者查询商品")
+    @PostMapping(value = "/customer/goods", consumes = "application/x-www-form-urlencoded")
+    public List<Goods> customer_goods(HttpServletRequest request)
+    {
+        String kind = request.getParameter("kind");
+
+        logger.logUsers("消费者查询商品",kind);
+
+        if(kind == null)
+        {
+            return null;
+        }
+        return goodService.findByKind(Integer.parseInt(kind));
+    }
+
+    @ApiOperation(value = "消费者下单")
+    @PostMapping(value = "/customer/buy", consumes = "application/x-www-form-urlencoded")
+    public String customer_buy(HttpServletRequest request)
+    {
+        String goodName = request.getParameter("goodName");
+
+        logger.logUsers("消费者下单",goodName);
+
+        if(goodService.judge(goodName) == false)
+        {
+            return "fail";
+        }
+        String count = request.getParameter("amount");
+        String address0 = request.getParameter("addrpicker0");
+        String address1 = request.getParameter("addrpicker1");
+        String address2 = request.getParameter("addrpicker2");
+        String addr = request.getParameter("addr");
+        addr = address0 + address1 + address2 + addr;
+
+        String tel = (String) request.getSession().getAttribute(SessionKey.USER_ID);
+
+        Orders orders = new Orders(tel,goodName,Integer.parseInt(count),addr);
+        orderService.save(orders);
+
+        return "success";
+    }
+
+    @ApiOperation(value = "消费者查询待分配")
+    @PostMapping(value = "/customer/wait", consumes = "application/x-www-form-urlencoded")
+    public List<Orders> customer_wait(HttpServletRequest request)
+    {
+        String tel = (String) request.getSession().getAttribute(SessionKey.USER_ID);
+
+        logger.logUsers("消费者查询待分配",tel);
+
+        return orderService.findByCustomerAndStatus(tel,Orders.待分配);
+    }
+
+    @ApiOperation(value = "消费者查询待签收")
+    @PostMapping(value = "/customer/transport", consumes = "application/x-www-form-urlencoded")
+    public List<Orders> customer_transport(HttpServletRequest request)
+    {
+        String tel = (String) request.getSession().getAttribute(SessionKey.USER_ID);
+
+        logger.logUsers("消费者查询待签收",tel);
+
+        return orderService.findByCustomerAndStatus(tel,Orders.待签收);
+    }
+
+    @ApiOperation(value = "消费者查询已签收")
+    @PostMapping(value = "/customer/history", consumes = "application/x-www-form-urlencoded")
+    public List<Orders> customer_history(HttpServletRequest request)
+    {
+        String tel = (String) request.getSession().getAttribute(SessionKey.USER_ID);
+
+        logger.logUsers("消费者查询已签收",tel);
+
+        return orderService.findByCustomerAndStatus(tel,Orders.已签收);
+    }
+
+    @ApiOperation(value = "消费者签收")
+    @PostMapping(value = "/customer/assign", consumes = "application/x-www-form-urlencoded")
+    public String customer_assign(HttpServletRequest request)
+    {
+        String tel = (String)request.getSession().getAttribute(SessionKey.USER_ID);
+        String id = request.getParameter("id");
+
+        logger.logUsers("消费者签收",tel + " " + id);
+
+        Orders orders = orderService.findOne(Integer.parseInt(id));
+        if(orders == null || orders.getCumsNumber().equals(tel) == false)
+        {
+            return "fail";
+        }
+        orderService.alterStatus(orders.getId(),Orders.已签收);
+        return "success";
+    }
+
+    @ApiOperation(value = "司机登录")
+    @PostMapping(value = "/driver/login", consumes = "application/x-www-form-urlencoded")
+    public String driver_login(HttpServletRequest request)
+    {
+        String name = request.getParameter("userid");
+        String passwd = request.getParameter("passwd");
+
+        logger.logUsers("司机登录",name + " " + passwd);
+
+        User user = userService.findByNameAndPasswd(name,passwd);
+        if(user == null || user.getPower() != User.司机)
+        {
+            return "fail";
+        }
+        request.getSession().setAttribute(SessionKey.USER_ID,userService.findByNameAndPasswd(name,passwd).getNumber());
+        return "success";
+    }
+
+    @ApiOperation(value = "司机注册")
+    @PostMapping(value = "/driver/sign", consumes = "application/x-www-form-urlencoded")
+    public String driver_sign(HttpServletRequest request)
+    {
+        String name = request.getParameter("userid");
+        String passwd = request.getParameter("passwd");
+        String number = request.getParameter("tel");
+        String terNumber = request.getParameter("terminalId");
+
+        logger.logUsers("司机注册",name + " " + passwd + " " + number + " " + terNumber);
+
+        if(userService.findByTerNumber(terNumber) != null)
+        {
+            return "fail";
+        }
+        User user = new User(number,name,passwd);
+        if(userService.save(user) == false)
+        {
+            return "fail";
+        }
+        return "success";
+    }
 
     @ApiOperation(value = "司机确认")
     @PostMapping(value = "/driver/confirm", consumes = "application/x-www-form-urlencoded")
     public String confirmed(HttpServletRequest request)
     {
-        //Object number = request.getSession().getAttribute(SessionKey.USER_ID);
-        String driver = request.getParameter("terNumber");
+        String number = (String) request.getSession().getAttribute(SessionKey.USER_ID);
+        String answer = request.getParameter("answer");
+
+        logger.logUsers("司机确认",number + answer);
+
         long id = Long.parseLong(request.getParameter("id"));
-        if(orderService.findByDriverAndStatus(driver,Orders.待确认) == null || orderService.alterStatus(id,Orders.待签收) == false)
+        Orders orders = orderService.findOne(id);
+        if(orders == null || orders.getDriNumber().equals(number) == false)
+        {
+            return "fail";
+        }
+
+        if(answer.equals("refuse"))
+        {
+            if(orderService.alterStatus(id,Orders.待分配) == false)
+            {
+                return "fail";
+            }
+            return "success";
+        }
+        if(orderService.alterStatus(id,Orders.待签收) == false)
         {
             return "fail";
         }
         return  "success";
+    }
+
+    @ApiOperation(value = "司机查询任务")
+    @PostMapping(value = "/driver/search", consumes = "application/x-www-form-urlencoded")
+    public List<Orders> driver_search(HttpServletRequest request)
+    {
+        String number = (String)request.getSession().getAttribute(SessionKey.USER_ID);
+
+        logger.logUsers("司机查询任务",number);
+
+        return orderService.findByDriverAndStatus(number,Orders.待确认);
+    }
+
+    @ApiOperation(value = "司机查询运输中任务")
+    @PostMapping(value = "/driver/transport", consumes = "application/x-www-form-urlencoded")
+    public List<Orders> driver_transport(HttpServletRequest request)
+    {
+        String number = (String)request.getSession().getAttribute(SessionKey.USER_ID);
+
+        logger.logUsers("司机查询运输中任务",number);
+
+        return orderService.findByDriverAndStatus(number,Orders.待签收);
+    }
+
+    @ApiOperation(value = "司机查询已完成任务")
+    @PostMapping(value = "/driver/history", consumes = "application/x-www-form-urlencoded")
+    public List<Orders> driver_history(HttpServletRequest request)
+    {
+        String number = (String)request.getSession().getAttribute(SessionKey.USER_ID);
+
+        logger.logUsers("司机查询已完成任务",number);
+
+        return orderService.findByDriverAndStatus(number,Orders.已签收);
+    }
+
+    @ApiOperation(value = "司机查询在线时长")
+    @PostMapping(value = "/driver/time", consumes = "application/x-www-form-urlencoded")
+    public long driver_time(HttpServletRequest request)
+    {
+        String number = (String)request.getSession().getAttribute(SessionKey.USER_ID);
+
+        logger.logUsers("司机查询在线时长",number);
+
+        User user = userService.findByNumber(number);
+        if (user == null)
+        {
+            return 0l;
+        }
+        return JT808Endpoint.influxDbUtils.getAllTime(user.getTerNumber());
+    }
+
+    @ApiOperation(value = "司机查询上线记录")
+    @PostMapping(value = "/driver/online", consumes = "application/x-www-form-urlencoded")
+    public List<CodeInfo> driver_online(HttpServletRequest request)
+    {
+        String number = (String)request.getSession().getAttribute(SessionKey.USER_ID);
+
+        logger.logUsers("司机查询上线记录",number);
+
+        User user = userService.findByNumber(number);
+        if (user == null)
+        {
+            return null;
+        }
+
+        QueryResult queryResult = JT808Endpoint.influxDbUtils.queryByTernumberAndStats(user.getTerNumber(),CodeInfo.上线);
+
+        return JT808Endpoint.influxDbUtils.turn(queryResult);
+    }
+
+    @ApiOperation(value = "司机查询下线记录")
+    @PostMapping(value = "/driver/offline", consumes = "application/x-www-form-urlencoded")
+    public List<CodeInfo> driver_offline(HttpServletRequest request)
+    {
+        String number = (String)request.getSession().getAttribute(SessionKey.USER_ID);
+
+        logger.logUsers("司机查询下线记录",number);
+
+        User user = userService.findByNumber(number);
+        if (user == null)
+        {
+            return null;
+        }
+
+        QueryResult queryResult = JT808Endpoint.influxDbUtils.queryByTernumberAndStats(user.getTerNumber(),CodeInfo.下线);
+
+        return JT808Endpoint.influxDbUtils.turn(queryResult);
     }
 }

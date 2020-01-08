@@ -64,9 +64,9 @@
             contentType:"application/x-www-form-urlencoded",
             dataType: "json",
             success: function(res) {
-                console.log("666");
+                console.log(res.length);
                 var list = res;
-                for(var $i = 0; $i < list.length - 1; $i++) {
+                for(var $i = 0; $i < list.length; $i++) {
                     var d = new Date(list[$i].startTime).toLocaleDateString();
                     var e = new Date(list[$i].endTime).toLocaleDateString();
                     temp +=

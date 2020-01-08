@@ -20,13 +20,11 @@ public class InfluxDBTest {
     @Test
     public void testInsert()
     {
-        CodeInfo codeInfo = new CodeInfo();
+        CodeInfo codeInfo = new CodeInfo(CodeInfo.在线,"015850612081");
         codeInfo.setAltitude(54);
         codeInfo.setLatitude(31929138);
         codeInfo.setLongitude(118887769);
         codeInfo.setStatus(55524);
-        codeInfo.setTagCode(CodeInfo.在线);
-        codeInfo.setTagName("015850612081");
         codeInfo.setAlltime(31565l);
 
         influxDbUtils.insert(codeInfo);
@@ -47,7 +45,10 @@ public class InfluxDBTest {
     @Test
     public void testSelect()
     {
-        long l = influxDbUtils.getAllTime("078569");
+        long l = influxDbUtils.getAllTimeIn20("015850612081");
         System.out.println(l);
+        QueryResult queryResult = influxDbUtils.queryByTernumberAndStatsLimitOne("015850612081",CodeInfo.在线);
+        List<CodeInfo> codeInfos = influxDbUtils.turn(queryResult);
+        System.out.println(codeInfos.get(codeInfos.size() - 1).getLatitude());
     }
 }

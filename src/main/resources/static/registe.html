@@ -39,7 +39,7 @@
             font-size: 35px;
             color: black;
         }
-        .log_submit {
+        #log_submit {
             display: block;
             width: 350px;
             height: 35px;
@@ -51,7 +51,7 @@
         }
         .divForm{
             position: absolute;/*绝对定位*/
-            width: 300px;
+            width: 400px;
             height: 200px;
             border: 1px solid red;
             text-align: center;/*(让div中的内容居中)*/
@@ -68,67 +68,66 @@
         }
     </style>
     <script>
-        function Login() {
+        function registe() {
             var name=$("#username").val();
             var pw=$("#password").val();
+            var p2=$("#password1").val();
+            if (name==""){
+                alert("用户名不可为空");
+            }
+            else if (pw==""){
+                alert("密码不可为空");
+            }
+           else if (pw!=p2) {
+                alert("请确认密码一致");
+            }
+            else{
             console.log(name);
             console.log(pw);
             $.ajax({
-                url:"http://" + window.location.host + "/controller/login",
+                url:"http://" + window.location.host + "/controller/sign",
                 type:'post',
                 data:{username:$("#username").val(),password:$("#password").val()},
                 success:function (data)
                 {
-                    if(data == "success")
-                    {
-                        window.location.href="http://" + window.location.host + "/home";
-                    }
-                    else
-                    {
-                        alert(data);
-                    }
+                    alert(data);
+                    if(data=="注册成功！！！"){
+                        console.log(data);
+                    window.location.href="http://" + window.location.host + "/login";}
                 },error:function (error) {
                     console.log(error);
                 }
             })
+            }
         }
+
     </script>
 </head>
 <body>
 <div style="background-color: rgba(237,237,237,0.7);width: auto">
     <div style="border-width:2px;margin-left: 1600px;width: 300px">
-        <form style="font-family: 楷体;font-size: 15px">
-            <input placeholder="请输入关键字"><a style="color: #ffc86d">English</a>
-        </form>
     </div>
 </div>
 
 <div class="class1" style="background-color: rgb(0,0,0);width: auto;height: 848px">
     <form action="#" method="post">
         <div id="login" style="text-align:center" class="divForm">
-            <div id="login_title">管理员登录</div>
+            <div id="login_title">管理员注册</div>
             <div class="line" ><span id="msg"></span></div>
-            <div class="line"><a style="font-size: 30px;color: #ffc86d">账号:</a>&nbsp;&nbsp;
-                <input id="username" type="text" placeholder="账号/手机/邮箱" />
+            <div class="line"><a style="font-size: 30px;color: #ffc86d">用户名:</a>&nbsp;&nbsp;
+                <input id="username" type="text" placeholder="账号/用户名/手机" />
             </div>
-            <div class="line"><a style="color: #ffc86d;font-size: 30px">密码:</a>&nbsp;&nbsp;
+            <div class="line"><a style="color: #ffc86d;font-size: 30px">&nbsp;&nbsp;密码:</a>&nbsp;&nbsp;
                 <input id="password" type="password" placeholder="请输入密码" />
             </div>
-            <br>
-            <button type="button" onclick="Login()" class="log_submit">登录</button>
-            <br>
-            <button type="button" class="log_submit"><a href="registe.html">注册账号</a> </button>
-
-            </b>
+            <div class="line"><a style="color: #ffc86d;font-size: 30px">&nbsp;&nbsp;确认:</a>&nbsp;&nbsp;
+                <input id="password1" type="password" placeholder="确认密码" />
             </div>
-    </form>
+            <br>
+            <br>
+            <button type="button" onclick="registe()" id="log_submit">注册</button>
         </div>
+    </form>
 </div>
-<footer style="font-size: 20px;background-color: rgba(229,231,232,0.76)">
-    <small><a href="#">法律条文</a></small>&nbsp;&nbsp;&nbsp;&nbsp;
-    <small><a href="#">联系我们</a></small>&nbsp;&nbsp;&nbsp;&nbsp;
-    <small><a href="#">客户意见</a></small>&nbsp;&nbsp;&nbsp;&nbsp;
-    <small><a href="#">商户合作</a></small>
-</footer>
 </body>
 </html>

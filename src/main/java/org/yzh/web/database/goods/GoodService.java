@@ -33,4 +33,14 @@ public class GoodService {
         }
         return true;
     }
+
+    public List<Goods> findByKind(int kind)
+    {
+        List<Goods> goods = goodRepository.findByKind(kind);
+        if(goods.isEmpty())
+        {
+            return list();
+        }
+        return goods;
+    }
 }
