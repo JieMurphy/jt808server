@@ -55,6 +55,8 @@
         <button onclick="jsonData('/controller/transport')">待签收查询</button>
         <br/>
         <button onclick="Data()">修改终端心跳间隔</button>
+        <br/>
+        <button onclick="GetData()">获得终端心跳间隔</button>
         <div class="message">
             <table id="tb">
             </table>
@@ -148,6 +150,23 @@
             type:'post',
             data:JSON.stringify([{id:0x0029,length:4,bytesValue:[0,0,0,5]}]),
             contentType: "application/json; charset=utf-8",
+            success:function (data)
+            {
+                console.log(data);
+                alert(data);
+            },error:function (error) {
+                alert(error);
+            }
+        })
+    }
+
+    GetData = function()
+    {
+        $.ajax({
+            url:"http://" + window.location.host + "/terminal/015850612084/parameters",
+            xhrFields:{withCredentials:true},
+            type:'get',
+            data:{idList:[0x0029]},
             success:function (data)
             {
                 console.log(data);

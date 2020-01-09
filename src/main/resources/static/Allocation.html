@@ -11,7 +11,7 @@
         }
     </style>
     <style type="text/css">
-        .main{min-height: 800px;min-width: 1700px;background-image: url("852.jpg");
+        .main{min-height: 800px;min-width: 1700px;
         }
         .main1{float:left;min-width: 1240px;min-height: 850px;}
         .main2{min-width: 500px;min-height: 850px;}
@@ -45,7 +45,12 @@
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body style="background-image: url(852.jpg)">
+<br>
+<div style="font-family: 楷体;font-size: 50px;width: 100%;height: 60px">
+    <p style="text-align: center">派送订单</p>
+</div>
+
     <div  id="main" class="main">
         <div class="main1">
             <br><br>
@@ -54,40 +59,13 @@
                     <th style="border-color: black">订单号</th>
                     <th style="border-color: black">发起时间</th>
                     <th style="border-color: black">发起人</th>
-                    <th style="border-color: black">起点</th>
                     <th style="border-color: black">终点</th>
                     <th style="border-color: black">商品</th>
                     <th style="border-color: black">一键确认</th>
                 </tr>
-                <tr>
-                    <td >0001</td>
-                    <td style="font-size: 30px">2019.12.30</td>
-                    <td style="font-size: 30px">Jack</td>
-                    <td style="font-size: 30px">南京</td>
-                    <td style="font-size: 30px">扬州</td>
-                    <td style="font-size: 30px">毛巾</td>
-                    <td style="font-size: 30px" ><button onclick="data2()" style="margin-left: 50px">确认 </button></td>
-                </tr>
-                <tr>
-                    <td >0001</td>
-                    <td style="font-size: 30px">2019.12.30</td>
-                    <td style="font-size: 30px">Jack</td>
-                    <td style="font-size: 30px">南京</td>
-                    <td style="font-size: 30px">扬州</td>
-                    <td style="font-size: 30px">毛巾</td>
-                    <td style="font-size: 30px" ><button onclick="getDate2(this)" style="margin-left: 50px">确认 </button></td>
-                </tr>
+
             </table>
-            <br><br><br>
 
-
-            <ul class="pagination" style="margin-left: 650px">
-                <li class="dropdown-toggled" ><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">第一页</a></li>
-                <li class="active"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">1</a> </li>
-                <li class="dropdown-toggled"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">2</a></li>
-                <li class="dropdown-toggled"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">3</a></li>
-                <li class="disabled"><a href="#" target="_blank" style="font-size: 20px;font-family: 楷体">最后一页</a></li>
-            </ul>
         </div>
         <div class="main2">
             <br><br>
@@ -106,6 +84,7 @@
 <script>
     var c="";
     var e="";
+
     function getDate2(th){
         c=$(th).parents("tr").find("#id").text();
         console.log(c);
@@ -160,7 +139,7 @@
             }
         });
     }
-
+    setInterval("getDate1()",500);
     function getDate1() {
         var temp = '';
         $.ajax({
@@ -178,7 +157,6 @@
                         '<td id="id" style="font-size: 30px">' + list[$i].id + '</td>' +
                         '<td style="font-size: 30px">' + d + '</td>' +
                         '<td style="font-size: 30px">' + list[$i].cumsNumber + '</td>' +
-                        '<td style="font-size: 30px">' + list[$i].startAddress + '</td>' +
                         '<td style="font-size: 30px">' + list[$i].endAddress + '</td>' +
                         '<td style="font-size: 30px">' + list[$i].goodName + '</td>' +
                         '<td style="font-size: 30px">' + '<button onclick="getDate2(this)"  style="margin-left: 50px">' + "确认" + '</button>' + '</td>' +
@@ -194,7 +172,6 @@
         });
     }
 
-getDate1();
 </script>
 </body>
 </html>

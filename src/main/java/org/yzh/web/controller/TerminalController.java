@@ -40,7 +40,7 @@ public class TerminalController {
         ParameterSetting body = new ParameterSetting();
         body.setParameters(parameters);
         Message message = new Message(MessageId.设置终端参数, terminalId, body);
-        CommonResult response = (CommonResult) endpoint.send(message);
+        CommonResult response = (CommonResult) ((Message)endpoint.send(message)).getBody();
         return response;
     }
 
@@ -62,7 +62,7 @@ public class TerminalController {
             message = new Message(MessageId.查询终端参数, terminalId, body);
         }
 
-        ParameterSettingReply response = (ParameterSettingReply) endpoint.send(message);
+        ParameterSettingReply response = (ParameterSettingReply) ((Message) endpoint.send(message)).getBody();
         return response;
     }
 

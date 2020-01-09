@@ -35,7 +35,7 @@ public class JT808Endpoint {
 
     private MessageManager messageManager = MessageManager.INSTANCE;
 
-
+    private int SerialNumber = 0;
 
     //TODO Test
     public Object send(String mobileNumber, String hexMessage) {
@@ -70,10 +70,13 @@ public class JT808Endpoint {
 
         session.getChannel().writeAndFlush(message);
 
-        String key = mobileNumber + (hasReplyFlowIdId ? message.getSerialNumber() : "");
+        //String key = mobileNumber + (hasReplyFlowIdId ? message.getSerialNumber() : "");
+        SerialNumber++;
+        String key = mobileNumber + SerialNumber;
+        logger.info("sendKey..." + key);
         SyncFuture receive = messageManager.receive(key);
         try {
-            return receive.get(10, TimeUnit.SECONDS);
+            return receive.get();
         } catch (InterruptedException e) {
             messageManager.remove(key);
             e.printStackTrace();
@@ -87,7 +90,9 @@ public class JT808Endpoint {
         CommonResult body = message.getBody();
         logger.info("终端通用应答..." + body);
         String mobileNumber = message.getMobileNumber();
-        Integer replyId = body.getReplyId();
+        //Integer replyId = body.getReplyId();
+        Integer replyId = SerialNumber;
+        logger.info("replyKey..." + mobileNumber+replyId);
         messageManager.put(mobileNumber + replyId, message);
     }
 
@@ -96,7 +101,9 @@ public class JT808Endpoint {
         ParameterSettingReply body = message.getBody();
         logger.info("查询终端参数应答..." + body);
         String mobileNumber = message.getMobileNumber();
-        Integer replyId = message.getSerialNumber();
+        //Integer replyId = message.getSerialNumber();
+        Integer replyId = SerialNumber;
+        logger.info("replyKey..." + mobileNumber+replyId);
         messageManager.put(mobileNumber + replyId, message);
     }
 

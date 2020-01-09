@@ -30,7 +30,7 @@
     </style>
 </head>
 <body background="852.jpg">
-    <div  class="main1">
+    <div class="main1">
         <a style="font-family: 楷体;font-size: 30px">点击终端号码，查看车辆位置信息：</a>
         <br><br>
         <table id="js1" border="1px" bordercolor="rgba(188,188,188,0.7)" style="height: 60px;font-size: 35px;font-family: 楷体;border-color: rgba(188,188,188,0.7)">
@@ -38,6 +38,8 @@
                 <th height="66px" width="200px" style="font-size: 30px">终端号码</th>
                 <th height="66px" width="200px" style="font-size: 30px">许可证号码</th>
                 <th height="66px" width="200px" style="font-size: 30px">司机号码</th>
+                <th height="60px" width="200px" style="font-size: 30px">修改消息间隔</th>
+                <th height="60px" width="150px" style="font-size: 30px">一件修改</th>
             </tr>
         </table>
     </div>
@@ -45,6 +47,8 @@
     </div>
 <script type="text/javascript">
     var c="";
+    var g="";
+    var h="";
     function getDate1() {
         var temp = '';
         $.ajax({
@@ -62,6 +66,8 @@
                         '<td id="id" height="66px" style="font-size: 30px">' +'<button style="font-size: 30px" onclick="Send(this)">'+ list[$i].terminalId +'</button>'+ '</td>'+
                         '<td height="66px" style="font-size: 30px">'+ list[$i].licensePlate + '</td>'+
                         '<td height="66px" style="font-size: 30px">' + list[$i].driNumber + '</td>'+
+                        '<td height="66px" style="font-size: 30px">' +'<input id="id2" placeholder="单位:s/次" style="width: 200px">'+ '</td>'+
+                        '<td style="font-size: 30px">' + '<button onclick="change(this)"  style="margin-left: 10px">' + "修改" + '</button>' + '</td>' +
                         '</tr>';
                 }
                 $("#js1 tr:not(:first)").html(""); /*  除了第一行tr的内容，其余内容清空，防止获取重复的数据  */
@@ -74,6 +80,25 @@
         });
     }
     getDate1();
+    function change(th) {
+        g=$(th).parents("tr").find("#id").text();
+        h=$(th).parents("tr").find("#id2").val();
+        console.log(g);
+        console.log(h);
+        $.ajax({
+            type: "post",
+            url: "http://" + window.location.host +"/terminal/g/parameters",
+            xhrFields: {withCredentials:true},
+            contentType:"application/json;charset=utf-8",
+            data:JSON.stringify([{id:0x0029,length:4,bytesValue:[0,0,0,h]}]),
+            success:function () {
+                alert("修改成功！");
+            },
+            error:function (error) {
+                alert(error);
+            }
+        });
+    }
     var map = new BMap.Map("container");
     map.centerAndZoom(new BMap.Point(118.9063330400, 31.9113227200), 16);//初始化地图
     map.addControl(new BMap.NavigationControl());               // 添加平移缩放控件
