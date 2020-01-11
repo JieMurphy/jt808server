@@ -21,6 +21,7 @@ public class InfluxDBTest {
     public void testInsert()
     {
         CodeInfo codeInfo = new CodeInfo(CodeInfo.在线,"015850612081");
+        codeInfo.setSpeed(12);
         codeInfo.setAltitude(54);
         codeInfo.setLatitude(31929138);
         codeInfo.setLongitude(118887769);
@@ -49,6 +50,6 @@ public class InfluxDBTest {
         System.out.println(l);
         QueryResult queryResult = influxDbUtils.queryByTernumberAndStatsLimitOne("015850612081",CodeInfo.在线);
         List<CodeInfo> codeInfos = influxDbUtils.turn(queryResult);
-        System.out.println(codeInfos.get(codeInfos.size() - 1).getLatitude());
+        System.out.println(codeInfos.get(codeInfos.size() - 1).getSpeed());
     }
 }

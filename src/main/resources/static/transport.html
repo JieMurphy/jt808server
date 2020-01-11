@@ -42,7 +42,7 @@
             <th>发起人</th>
             <th>终点</th>
             <th>商品</th>
-            <th>终端号码</th>
+            <th>司机号码</th>
             <th>订单状态</th>
         </tr>
 
@@ -52,6 +52,7 @@
 </div>
 
 <script>
+    setInterval("getDate1()",500);
     function getDate1() {
         var temp = '';
         $.ajax({
@@ -71,7 +72,7 @@
                         '<td style="font-size: 30px">' + list[$i].cumsNumber + '</td>' +
                         '<td style="font-size: 30px">' + list[$i].endAddress + '</td>' +
                         '<td style="font-size: 30px">' + list[$i].goodName + '</td>' +
-                        '<td style="font-size: 30px">' + list[$i].terminalId +  '</td>' +
+                        '<td style="font-size: 30px">' + list[$i].driNumber +  '</td>' +
                         '<td style="font-size: 30px">' + "待签收" +  '</td>' +
                         '</tr >';
                 }

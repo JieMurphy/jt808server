@@ -209,6 +209,7 @@ public class JT808Endpoint {
         logger.info("position.."+message.getBody());
         PositionReport body = message.getBody();
         CodeInfo codeInfo = new CodeInfo(CodeInfo.在线,message.getMobileNumber());
+        codeInfo.setSpeed(body.getSpeed());
         codeInfo.setStatus(body.getStatus());
         codeInfo.setLongitude(body.getLongitude());
         codeInfo.setLatitude(body.getLatitude());

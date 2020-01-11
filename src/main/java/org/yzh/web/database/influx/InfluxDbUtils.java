@@ -56,6 +56,7 @@ public class InfluxDbUtils {
         fields.put("Latitude",codeInfo.getLatitude());
         fields.put("Status",codeInfo.getStatus());
         fields.put("AllTime",codeInfo.getAlltime());
+        fields.put("Speed",codeInfo.getSpeed());
 
         Builder builder = Point.measurement(measurement);
         builder.tag(tags);
@@ -64,47 +65,40 @@ public class InfluxDbUtils {
         influxDB.write(database,"",builder.build());
     }
 
-
-
-    public Long getAllTime(String terNumber)
-    {
-        QueryResult queryResult = queryByTernumberAndStatsLimitOne(terNumber,CodeInfo.在线);
-        if(queryResult == null)
-        {
-            return null;
-        }
-        List<CodeInfo> codeInfos = turn(queryResult);
-        if(codeInfos.isEmpty())
-        {
-            return null;
-        }
-        CodeInfo codeInfo = codeInfos.get(codeInfos.size() - 1);
-        if(codeInfo == null)
-        {
-            return 0l;
-        }
-        return codeInfo.getAlltime();
-    }
-
-    public Long getAllTimeIn20(String terNumber)
+    public CodeInfo getIn20(String terNumber)
     {
         String time = turnTimestampToTime(System.currentTimeMillis() - 20 * 60 * 1000);
         QueryResult queryResult = queryByTernumberAndStatsLimitOneIntime(terNumber,CodeInfo.在线,time);
         if(queryResult == null)
         {
-            return 0l;
+            return null;
         }
         List<CodeInfo> codeInfos = turn(queryResult);
         if(codeInfos.isEmpty())
         {
-            return 0l;
+            return null;
         }
         CodeInfo codeInfo = codeInfos.get(codeInfos.size() - 1);
+        return codeInfo;
+    }
+
+    public Integer getSpeedIn20(String terNumber)
+    {
+        CodeInfo codeInfo = getIn20(terNumber);
+        if(codeInfo == null)
+        {
+            return 0;
+        }
+        return codeInfo.getSpeed();
+    }
+
+    public Long getAllTimeIn20(String terNumber)
+    {
+        CodeInfo codeInfo = getIn20(terNumber);
         if(codeInfo == null)
         {
             return 0l;
         }
-
         return codeInfo.getAlltime();
     }
 

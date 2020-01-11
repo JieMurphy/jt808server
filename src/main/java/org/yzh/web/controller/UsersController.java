@@ -89,21 +89,21 @@ public class UsersController {
         Goods goods = new Goods("香蕉",Goods.水果,12);
         Goods goods1 = new Goods("胡萝卜",Goods.蔬菜,13);
         Goods goods2 = new Goods("玉米",Goods.谷物,11);
+        Goods goods3 = new Goods("火龙果",Goods.水果,10);
+        Goods goods4 = new Goods("花菜",Goods.蔬菜,15);
+        Goods goods5 = new Goods("小麦",Goods.谷物,17);
+        Goods goods6= new Goods("苹果",Goods.水果,9);
+        Goods goods7 = new Goods("白菜",Goods.蔬菜,16);
+        Goods goods8 = new Goods("水稻",Goods.谷物,8);
         goodService.save(goods);
         goodService.save(goods1);
         goodService.save(goods2);
-
-        Orders orders = new Orders("15268059209","香蕉",5,"南京金陵科技学院");
-        Orders orders1 = new Orders("15268059209","香蕉",8,"钢铁人");
-        Orders orders2 = new Orders("15268059209","玉米",3,"南京金陵科技学院");
-        Orders orders3 = new Orders("15268059209","胡萝卜",2,"浙江衢州");
-       orderService.save(orders);
-        orderService.save(orders1);
-        orderService.alterStatus(2,Orders.待确认,"15906709889");
-        orderService.save(orders2);
-        orderService.alterStatus(3,Orders.待签收);
-        orderService.save(orders3);
-        orderService.alterStatus(4,Orders.已签收,"15906709889");
+        goodService.save(goods3);
+        goodService.save(goods4);
+        goodService.save(goods5);
+        goodService.save(goods6);
+        goodService.save(goods7);
+        goodService.save(goods8);
 
         return "注册成功！！！";
     }
@@ -173,10 +173,10 @@ public class UsersController {
         {
             return "fail";
         }
-        /*if(orderService.isWorking(driver.getNumber()) || TCPServerHandler.sessionManager.getByMobileNumber(terNumber) == null)
+        if(orderService.isWorking(driver.getNumber()) || TCPServerHandler.sessionManager.getByMobileNumber(terNumber) == null)
         {
             return "fail";
-        }*/
+        }
         if(orderService.alterStatus(id,Orders.待确认,driver.getNumber()) == false) {
             return "fail";
         }
@@ -254,7 +254,7 @@ public class UsersController {
         {
             return null;
         }
-        QueryResult result = JT808Endpoint.influxDbUtils.queryByTernumberAndTime(user.getTerNumber(),orders.getStartTime());
+        QueryResult result = JT808Endpoint.influxDbUtils.queryByTernumberAndTime(user.getTerNumber(),orders.getChangeTime());
         return JT808Endpoint.influxDbUtils.turn(result);
     }
 
@@ -458,7 +458,7 @@ public class UsersController {
 
     @ApiOperation(value = "司机查询在线时长")
     @PostMapping(value = "/driver/time", consumes = "application/x-www-form-urlencoded")
-    public long driver_time(HttpServletRequest request)
+    public CodeInfo driver_time(HttpServletRequest request)
     {
         String number = (String)request.getSession().getAttribute(SessionKey.USER_ID);
 
@@ -467,9 +467,9 @@ public class UsersController {
         User user = userService.findByNumber(number);
         if (user == null)
         {
-            return 0l;
+            return null;
         }
-        return JT808Endpoint.influxDbUtils.getAllTime(user.getTerNumber());
+        return JT808Endpoint.influxDbUtils.getIn20(user.getTerNumber());
     }
 
     @ApiOperation(value = "司机查询上线记录")

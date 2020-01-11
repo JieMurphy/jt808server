@@ -45,13 +45,14 @@
                     <th>发起人</th>
                     <th>终点</th>
                     <th>商品</th>
-                    <th>终端号码</th>
+                    <th>司机号码</th>
                     <th>结束时间</th>
             </tr>
         </table>
         <br><br><br>
     </div>
 <script>
+    setInterval("getDate1()",500);
     function getDate1() {
         var temp = '';
         $.ajax({
@@ -65,7 +66,7 @@
                 var list = res;
                 for(var $i = 0; $i < list.length; $i++) {
                     var d = new Date(list[$i].startTime).toLocaleDateString();
-                    var e = new Date(list[$i].endTime).toLocaleDateString();
+                    var e = new Date(list[$i].changeTime).toLocaleDateString();
                     temp +=
                         '<tr>' +
                         '<td style="font-size: 30px">' + list[$i].id + '</td>' +
@@ -73,7 +74,7 @@
                         '<td style="font-size: 30px">' + list[$i].cumsNumber + '</td>' +
                         '<td style="font-size: 30px">' + list[$i].endAddress + '</td>' +
                         '<td style="font-size: 30px">' + list[$i].goodName + '</td>' +
-                        '<td style="font-size: 30px">' + list[$i].terminalid +  '</td>' +
+                        '<td style="font-size: 30px">' + list[$i].driNumber +  '</td>' +
                         '<td style="font-size: 30px">' + e + '</td>' +
                         '</tr>';
                 }

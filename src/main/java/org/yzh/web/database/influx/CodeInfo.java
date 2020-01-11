@@ -14,6 +14,7 @@ public class CodeInfo implements Serializable {
     private Integer longitude;//经度
     private Integer altitude;//海拔
     private Long alltime;//在线时长
+    private Integer speed;//速度
 
     private String time;
     private String tagCode;//状态码
@@ -33,6 +34,7 @@ public class CodeInfo implements Serializable {
         this.longitude = 0;
         this.altitude = 0;
         this.status = 0;
+        this.speed = 0;
         this.alltime = 1l;
     }
 
@@ -98,5 +100,13 @@ public class CodeInfo implements Serializable {
 
     public Long getAlltime() {
         return alltime;
+    }
+
+    public void setSpeed(Integer speed) {
+        this.speed = speed;
+    }
+
+    public Integer getSpeed() {
+        return speed;
     }
 }

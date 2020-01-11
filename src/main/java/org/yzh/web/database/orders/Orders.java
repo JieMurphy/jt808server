@@ -98,4 +98,8 @@ public class Orders {
     public int getCount() {
         return count;
     }
+
+    public Timestamp getChangeTime() {
+        return changeTime;
+    }
 }

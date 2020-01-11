@@ -37,10 +37,10 @@ public class OrderService {
 
     public boolean isWorking(String number)
     {
-        List<Orders> driver1 = orderRepository.findByDriNumberAndStatus(number,Orders.待确认);
-        //List<Orders> driver2 = orderRepository.findByDriNumberAndStatus(number,Orders.待签收);
+        //List<Orders> driver1 = orderRepository.findByDriNumberAndStatus(number,Orders.待确认);
+        List<Orders> driver2 = orderRepository.findByDriNumberAndStatus(number,Orders.待签收);
 
-        if(driver1.isEmpty() /*&& driver2.isEmpty()*/)
+        if(driver2.isEmpty())
         {
             return false;
         }
